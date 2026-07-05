@@ -142,6 +142,6 @@ Then redeploy.
 ## Notes
 
 - The repo defaults to SQLite so it runs locally out of the box. SQLite is **not** suitable for hosted ecommerce orders — switch the datasource to Postgres before deploying (see step 3).
-- The current upload API writes to local disk. On Vercel, local files are not persistent. Use Supabase Storage, Cloudflare R2, or S3 before relying on uploads in production.
+- Customer 3D-model uploads use **Vercel Blob** in production. In the Vercel dashboard go to **Storage → Create → Blob**, connect it to the project, and `BLOB_READ_WRITE_TOKEN` is injected automatically. Without it, uploads fall back to local disk (fine for dev, not for Vercel).
 - Test with Mollie test keys before using live keys.
 - Keep all Mollie and Sendcloud secrets in hosting environment variables, never in frontend code.

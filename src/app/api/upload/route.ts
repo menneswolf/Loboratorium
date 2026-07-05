@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { v4 as uuid } from "uuid";
+import { put } from "@vercel/blob";
 import { rateLimit } from "@/lib/rate-limit";
 
 const ACCEPTED_EXT = [".glb", ".gltf", ".stl"];
@@ -32,11 +33,23 @@ export async function POST(req: Request) {
     );
   }
 
+  const filename = `${uuid()}${ext}`;
+
   try {
+    // Production (Vercel): store in Vercel Blob — the local filesystem is not
+    // writable/persistent on serverless. Enabled automatically once a Blob
+    // store is connected (BLOB_READ_WRITE_TOKEN is set in the environment).
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put(`uploads/${filename}`, file, {
+        access: "public",
+        contentType: file.type || "application/octet-stream",
+      });
+      return NextResponse.json({ ok: true, url: blob.url }, { status: 201 });
+    }
+
+    // Local dev: write to public/uploads on disk.
     const uploadsDir = path.join(process.cwd(), "public", "uploads");
     await mkdir(uploadsDir, { recursive: true });
-
-    const filename = `${uuid()}${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(path.join(uploadsDir, filename), buffer);
 
