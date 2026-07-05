@@ -11,14 +11,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { content } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { Icon } from "@/components/brand/icon";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 
 export function CustomOrders() {
-  const c = content.customOrders;
+  const { t } = useT();
+  const c = t.customOrders;
 
   return (
     <section id="custom-orders" className="relative py-20 sm:py-28">

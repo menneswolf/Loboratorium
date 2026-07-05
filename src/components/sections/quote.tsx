@@ -5,6 +5,7 @@
  *  ---------------------------------------------------------------------------
  *  The conversion section. Left rail = headline + reassurance; right rail =
  *  a validated form that POSTs to /api/quote (saved to the database).
+ *  All copy is translated via useT().
  * ========================================================================== */
 
 import { useState } from "react";
@@ -13,12 +14,12 @@ import {
   ArrowRight,
   CheckCircle2,
   Loader2,
-  ShieldCheck,
-  Clock,
-  Mail,
   MapPin,
+  Mail,
 } from "lucide-react";
-import { content, brand } from "@/config/brand";
+import { useT } from "@/lib/i18n";
+import { brand } from "@/config/brand";
+import { Icon } from "@/components/brand/icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -56,14 +57,9 @@ const empty: FormState = {
   fileUrl: "",
 };
 
-const reassurance = [
-  { icon: Clock, title: "24h response", text: "We reply to every request within one business day." },
-  { icon: ShieldCheck, title: "No obligation", text: "Quotes are free. NDA available on request." },
-  { icon: Mail, title: "Human support", text: "Talk to the people who actually print your part." },
-];
-
 export function Quote() {
-  const q = content.quote;
+  const { t } = useT();
+  const q = t.quote;
   const { toast } = useToast();
   const [form, setForm] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
@@ -76,12 +72,11 @@ export function Quote() {
 
   const validate = (): boolean => {
     const e: Partial<Record<keyof FormState, string>> = {};
-    if (form.name.trim().length < 2) e.name = "Please enter your name";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Please enter a valid email";
-    if (!form.projectType) e.projectType = "Please pick a project type";
-    if (form.message.trim().length < 10) e.message = "Tell us a bit more about your project";
-    if (form.fileUrl && !/^https?:\/\/.+/.test(form.fileUrl))
-      e.fileUrl = "Please paste a valid URL (https://…)";
+    if (form.name.trim().length < 2) e.name = q.errName;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = q.errEmail;
+    if (!form.projectType) e.projectType = q.errProject;
+    if (form.message.trim().length < 10) e.message = q.errMessage;
+    if (form.fileUrl && !/^https?:\/\/.+/.test(form.fileUrl)) e.fileUrl = q.errFile;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -102,16 +97,13 @@ export function Quote() {
       }
       setStatus("success");
       setForm(empty);
-      toast({
-        title: "Request received!",
-        description: "We'll get back to you within 24 hours.",
-      });
+      toast({ title: q.successTitle, description: q.successMsg });
     } catch (err) {
       setStatus("idle");
       toast({
-        title: "Something went wrong",
+        title: "Error",
         description:
-          err instanceof Error ? err.message : "Please try again or email us directly.",
+          err instanceof Error ? err.message : "Please try again.",
         variant: "destructive",
       });
     }
@@ -129,20 +121,15 @@ export function Quote() {
           <div>
             <SectionHeading
               eyebrow={q.eyebrow}
-              title={
-                <>
-                  Tell us what you want to{" "}
-                  <span className="text-gradient">make.</span>
-                </>
-              }
+              title={q.title}
               subtitle={q.subtitle}
             />
 
             <ul className="mt-8 space-y-4">
-              {reassurance.map((r) => (
+              {q.reassurance.map((r) => (
                 <Reveal as="li" key={r.title} className="flex gap-3">
                   <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-brand-accent">
-                    <r.icon className="size-4" />
+                    <Icon name={r.icon} className="size-4" />
                   </span>
                   <div>
                     <p className="font-heading text-sm font-semibold text-foreground">
@@ -190,18 +177,17 @@ export function Quote() {
                       <CheckCircle2 className="size-9" />
                     </motion.div>
                     <h3 className="mt-5 font-heading text-2xl font-bold text-foreground">
-                      Request received!
+                      {q.successTitle}
                     </h3>
                     <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                      Thanks for reaching out. Our team will review your brief and
-                      reply within 24 hours with a quote and next steps.
+                      {q.successMsg}
                     </p>
                     <Button
                       variant="outline"
                       className="mt-6"
                       onClick={() => setStatus("idle")}
                     >
-                      Send another request
+                      {q.sendAnother}
                     </Button>
                   </motion.div>
                 ) : (
@@ -215,7 +201,7 @@ export function Quote() {
                     className="space-y-4"
                   >
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <Field label="Your name" error={errors.name} required>
+                      <Field label={q.form.name} error={errors.name} required>
                         <Input
                           value={form.name}
                           onChange={(e) => update("name", e.target.value)}
@@ -223,7 +209,7 @@ export function Quote() {
                           autoComplete="name"
                         />
                       </Field>
-                      <Field label="Email" error={errors.email} required>
+                      <Field label={q.form.email} error={errors.email} required>
                         <Input
                           type="email"
                           value={form.email}
@@ -235,26 +221,25 @@ export function Quote() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <Field label="Company / brand" error={errors.company}>
+                      <Field label={q.form.company} error={errors.company}>
                         <Input
                           value={form.company}
                           onChange={(e) => update("company", e.target.value)}
-                          placeholder="Optional"
                           autoComplete="organization"
                         />
                       </Field>
-                      <Field label="Project type" error={errors.projectType} required>
+                      <Field label={q.form.projectType} error={errors.projectType} required>
                         <Select
                           value={form.projectType}
                           onValueChange={(v) => update("projectType", v)}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Pick one…" />
+                            <SelectValue placeholder={q.form.pickOne} />
                           </SelectTrigger>
                           <SelectContent>
-                            {q.projectTypes.map((t) => (
-                              <SelectItem key={t} value={t}>
-                                {t}
+                            {q.projectTypes.map((p) => (
+                              <SelectItem key={p} value={p}>
+                                {p}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -263,26 +248,24 @@ export function Quote() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <Field label="Quantity" error={errors.quantity}>
+                      <Field label={q.form.quantity} error={errors.quantity}>
                         <Input
                           value={form.quantity}
                           onChange={(e) => update("quantity", e.target.value)}
-                          placeholder="e.g. 1, or 50–200"
                         />
                       </Field>
-                      <Field label="Budget (optional)" error={errors.budget}>
+                      <Field label={q.form.budget} error={errors.budget}>
                         <Input
                           value={form.budget}
                           onChange={(e) => update("budget", e.target.value)}
-                          placeholder="e.g. €500–€1000"
                         />
                       </Field>
                     </div>
 
                     <Field
-                      label="Link to file (optional)"
+                      label={q.form.fileUrl}
                       error={errors.fileUrl}
-                      hint="STL, OBJ, STEP — or a Drive / WeTransfer link"
+                      hint={q.form.fileHint}
                     >
                       <Input
                         value={form.fileUrl}
@@ -291,11 +274,10 @@ export function Quote() {
                       />
                     </Field>
 
-                    <Field label="Describe your project" error={errors.message} required>
+                    <Field label={q.form.message} error={errors.message} required>
                       <Textarea
                         value={form.message}
                         onChange={(e) => update("message", e.target.value)}
-                        placeholder="What do you want to print? Material, colour, deadline, end use…"
                         rows={4}
                       />
                     </Field>
@@ -309,17 +291,17 @@ export function Quote() {
                       {status === "loading" ? (
                         <>
                           <Loader2 className="size-4 animate-spin" />
-                          Sending…
+                          {q.form.sending}
                         </>
                       ) : (
                         <>
-                          Send request
+                          {q.form.send}
                           <ArrowRight className="transition-transform group-hover:translate-x-1" />
                         </>
                       )}
                     </Button>
                     <p className="text-center text-xs text-muted-foreground">
-                      By sending, you agree we may contact you about your request.
+                      {q.form.agree}
                     </p>
                   </motion.form>
                 )}

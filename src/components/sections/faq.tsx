@@ -12,23 +12,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { content } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "@/components/motion/reveal";
 
 export function Faq() {
-  const f = content.faq;
+  const { t } = useT();
+  const f = t.faq;
 
   return (
     <section id="faq" className="relative py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <SectionHeading
-          eyebrow="FAQ"
-          title={
-            <>
-              Questions, <span className="text-gradient">answered.</span>
-            </>
-          }
+          eyebrow={f.eyebrow}
+          title={f.title}
           align="center"
         />
         <Reveal delay={0.1} className="mt-12">
@@ -38,7 +35,7 @@ export function Faq() {
             defaultValue="item-0"
             className="w-full"
           >
-            {f.map((item, i) => (
+            {f.items.map((item, i) => (
               <AccordionItem
                 key={item.q}
                 value={`item-${i}`}

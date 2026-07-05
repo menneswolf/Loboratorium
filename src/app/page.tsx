@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
+import { Shop } from "@/components/sections/shop";
 import { CustomOrders } from "@/components/sections/custom-orders";
 import { ForBrands } from "@/components/sections/for-brands";
 import { Capabilities } from "@/components/sections/capabilities";
@@ -9,6 +10,8 @@ import { Quote } from "@/components/sections/quote";
 import { Faq } from "@/components/sections/faq";
 import { CtaBand } from "@/components/sections/cta-band";
 import { Footer } from "@/components/sections/footer";
+import { CartDrawer } from "@/components/sections/cart-drawer";
+import { CheckoutDialog } from "@/components/sections/checkout-dialog";
 
 export default function Home() {
   return (
@@ -16,6 +19,7 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <Shop />
         <CustomOrders />
         <ForBrands />
         <Capabilities />
@@ -26,6 +30,9 @@ export default function Home() {
         <CtaBand />
       </main>
       <Footer />
+      {/* Global overlays */}
+      <CartDrawer />
+      <CheckoutDialog />
     </div>
   );
 }

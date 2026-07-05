@@ -45,3 +45,39 @@ Work Log:
 Stage Summary:
 - Site is browser-verified and fully interactive. Sticky footer confirmed (footer bottom === doc height on long page). Responsive on mobile (375px) and desktop (1440px) with no overflow.
 - Ready for the owner to rebrand via src/config/brand.ts (logo file, colors, fonts, copy).
+
+---
+Task ID: i18n-webshop
+Agent: Z.ai Code (main)
+Task: Make the site multilingual (EN/NL/FR) and add a "normal webshop" part (product catalog + cart + checkout), keeping the single / route.
+
+Work Log:
+- Created src/config/translations.ts with a full Content type + EN/NL/FR translations for ALL copy (hero, shop, custom orders, brands, capabilities, work, process, quote, faq, cta, footer, nav). Titles use a Title={lead,accent,tail} type so the gradient accent stays translatable.
+- Removed `content` and `nav` from brand.ts (now in translations). Brand identity (logo/colors/fonts/contact) stays language-independent in brand.ts.
+- Built src/lib/i18n.ts: Zustand store with `persist` (localStorage) for the active locale + useT() hook returning {t, locale, setLocale}. Persist hydrates after first render to avoid SSR hydration mismatch.
+- Refactored all 10 existing sections to use useT() instead of importing `content`. Updated SectionHeading to accept Title objects.
+- Added LanguageSwitcher (dropdown) in the navbar (desktop + mobile menu).
+- Built the webshop:
+  • src/config/products.ts — 8 products with localised name/description (EN/NL/FR), prices (EUR), categories, specs, badges, stock.
+  • Prisma: added Order + OrderItem models; pushed schema.
+  • /api/orders POST route with zod validation; recomputes total server-side from catalogue (never trusts client prices); generates unique LOB-XXXX ref; shipping free over €150 else €6.50.
+  • src/lib/cart.ts — Zustand cart store (persist) storing productId+qty, with drawer/checkout UI state.
+  • Shop section (filterable product grid, ProductCard with add-to-cart), ProductDetailDialog (modal with specs + qty), CartDrawer (Sheet slide-over), CheckoutDialog (shipping form → POST → success screen with order ref).
+  • Navbar cart button with live count badge.
+  • Added Shop section + CartDrawer + CheckoutDialog to page.tsx (single / route preserved).
+- Generated 4 new product images (planter, vase, phone stand, lamp shade) via image-generation skill; reused 4 gallery images for the other products.
+- Fixed: FAQ used f.map (f is now the faq object, array is f.items); stale Prisma client needed dev-server restart for db.order; Quote form strings now from t.
+
+Verification (Agent Browser + VLM + DB):
+- Page renders 200, no console errors, lint clean.
+- Language switch EN→NL→FR→EN: hero title, shop heading, nav labels, AND product names all translate instantly. Confirmed: NL hero "Wij maken van ideeën tastbare dingen.", FR "Nous transformons vos idées en objets réels."
+- Shop: 8 product cards render with images, names, prices (€24/€32/€18/€45), badges, + add-to-cart buttons; category filter chips work.
+- Cart: add-to-cart updates badge; drawer opens with items, qty controls, subtotal/shipping/total.
+- Checkout golden path: fill shipping form → Place order → "Order placed!" success → order ref shown → cart cleared. Verified in DB: order LOB-4Z62S4, "Taylor Demo", 1× Lattice Vase, total €38.50.
+- No horizontal overflow on 375px (mobile) or 1440px (desktop). Sticky footer confirmed (footer bottom === doc height). VLM confirms sleek/modern design, no visual problems.
+
+Stage Summary:
+- Site is now fully multilingual (EN/NL/FR) with instant client-side language switching via a navbar dropdown — add a language by extending translations.ts.
+- A complete "normal webshop" runs on the same / route: product catalog (config-driven, multilingual), cart drawer, checkout → DB order with reference. Server-side price validation prevents tampering.
+- Custom orders + brand partnerships remain the lead focus (Shop sits right after the hero).
+- Single design file (brand.ts) + single content file (translations.ts) + product catalog (products.ts) — all editable in one place.

@@ -12,7 +12,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRight, Sparkles, MoveRight } from "lucide-react";
-import { content } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Marquee } from "@/components/motion/reveal";
 
@@ -61,7 +61,8 @@ function CountUp({ value }: { value: string }) {
 }
 
 export function Hero() {
-  const h = content.hero;
+  const { t } = useT();
+  const h = t.hero;
 
   return (
     <section
@@ -99,8 +100,8 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5 font-heading text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
           >
-            {h.title}{" "}
-            <span className="text-gradient">{h.titleAccent}</span>
+            {h.title.lead}{" "}
+            <span className="text-gradient">{h.title.accent}</span>
           </motion.h1>
 
           <motion.p
@@ -216,7 +217,7 @@ export function Hero() {
 
       {/* Marquee */}
       <div className="mt-16 sm:mt-20">
-        <Marquee items={content.marquee} />
+        <Marquee items={t.marquee} />
       </div>
     </section>
   );

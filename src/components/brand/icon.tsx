@@ -23,6 +23,7 @@ import {
   Instagram,
   Linkedin,
   Mail,
+  Clock,
   type LucideIcon,
 } from "lucide-react";
 
@@ -44,6 +45,7 @@ export const iconMap: Record<string, LucideIcon> = {
   instagram: Instagram,
   linkedin: Linkedin,
   mail: Mail,
+  clock: Clock,
 };
 
 export function Icon({

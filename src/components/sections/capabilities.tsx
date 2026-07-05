@@ -7,13 +7,14 @@
  * ========================================================================== */
 
 import { motion } from "framer-motion";
-import { content } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { Icon } from "@/components/brand/icon";
 import { SectionHeading } from "./section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 
 export function Capabilities() {
-  const c = content.capabilities;
+  const { t } = useT();
+  const c = t.capabilities;
 
   return (
     <section id="capabilities" className="relative py-20 sm:py-28">
@@ -59,11 +60,10 @@ export function Capabilities() {
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="font-heading text-lg font-semibold text-foreground">
-                  Materials we print
+                  {c.materialsTitle}
                 </h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  40+ filaments & resins in stock — can&apos;t find yours? We&apos;ll
-                  source it.
+                  {c.materialsSubtitle}
                 </p>
               </div>
             </div>

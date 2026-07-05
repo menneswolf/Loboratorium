@@ -9,13 +9,14 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { content } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { SectionHeading } from "./section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 
 export function Work() {
-  const w = content.work;
+  const { t } = useT();
+  const w = t.work;
 
   return (
     <section id="work" className="relative py-20 sm:py-28">

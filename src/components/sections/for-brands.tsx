@@ -10,14 +10,16 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Building2 } from "lucide-react";
-import { content, brand } from "@/config/brand";
+import { useT } from "@/lib/i18n";
+import { brand } from "@/config/brand";
 import { Icon } from "@/components/brand/icon";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 
 export function ForBrands() {
-  const b = content.brands;
+  const { t } = useT();
+  const b = t.brands;
 
   return (
     <section id="brands" className="relative overflow-hidden py-20 sm:py-28">
@@ -69,10 +71,10 @@ export function ForBrands() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                    Partnership path
+                    {b.pathLabel}
                   </p>
                   <p className="font-heading text-lg font-semibold text-foreground">
-                    From intro to delivery
+                    {b.pathTitle}
                   </p>
                 </div>
               </div>

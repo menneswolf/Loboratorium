@@ -8,11 +8,13 @@
  * ========================================================================== */
 
 import Link from "next/link";
-import { brand, content } from "@/config/brand";
+import { brand } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { Logo } from "@/components/brand/logo";
 import { Icon } from "@/components/brand/icon";
 
 export function Footer() {
+  const { t } = useT();
   const year = new Date().getFullYear();
 
   return (
@@ -44,10 +46,10 @@ export function Footer() {
           {/* Explore */}
           <div>
             <h3 className="font-heading text-sm font-semibold text-foreground">
-              Explore
+              {t.footer.explore}
             </h3>
             <ul className="mt-4 space-y-2.5">
-              {brand.nav.map((item) => (
+              {t.nav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -63,10 +65,10 @@ export function Footer() {
           {/* Services */}
           <div>
             <h3 className="font-heading text-sm font-semibold text-foreground">
-              Services
+              {t.footer.services}
             </h3>
             <ul className="mt-4 space-y-2.5">
-              {content.customOrders.items
+              {t.customOrders.items
                 .slice(0, 5)
                 .map((item) => (
                   <li key={item.title}>
@@ -84,7 +86,7 @@ export function Footer() {
           {/* Contact */}
           <div>
             <h3 className="font-heading text-sm font-semibold text-foreground">
-              Contact
+              {t.footer.contact}
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
               <li>
@@ -113,12 +115,12 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row">
           <p>
-            © {year} {brand.name}. All rights reserved.
+            © {year} {brand.name}. {t.footer.rights}
           </p>
           <p>
-            Crafted with precision in Belgium ·{" "}
+            {t.footer.crafted} ·{" "}
             <span className="text-muted-foreground/70">
-              Revamp your brand in <code className="text-foreground/80">src/config/brand.ts</code>
+              {t.footer.revamp} <code className="text-foreground/80">src/config/brand.ts</code>
             </span>
           </p>
         </div>

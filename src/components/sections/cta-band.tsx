@@ -9,12 +9,13 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { content } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
 
 export function CtaBand() {
-  const c = content.ctaBand;
+  const { t } = useT();
+  const c = t.ctaBand;
 
   return (
     <section className="relative py-12 sm:py-16">

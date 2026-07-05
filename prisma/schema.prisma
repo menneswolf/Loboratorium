@@ -22,3 +22,29 @@ model QuoteRequest {
   fileUrl     String?
   createdAt   DateTime @default(now())
 }
+
+model Order {
+  id         String      @id @default(cuid())
+  ref        String      @unique
+  email      String
+  name       String
+  address    String
+  city       String
+  postalCode String
+  country    String
+  total      Float
+  status     String      @default("pending")
+  locale     String      @default("en")
+  items      OrderItem[]
+  createdAt  DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  productId String
+  name      String
+  price     Float
+  qty       Int
+}

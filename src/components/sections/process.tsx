@@ -7,12 +7,13 @@
  * ========================================================================== */
 
 import { motion } from "framer-motion";
-import { content } from "@/config/brand";
+import { useT } from "@/lib/i18n";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "@/components/motion/reveal";
 
 export function Process() {
-  const p = content.process;
+  const { t } = useT();
+  const p = t.process;
 
   return (
     <section id="process" className="relative overflow-hidden py-20 sm:py-28">

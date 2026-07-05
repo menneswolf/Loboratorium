@@ -3,11 +3,14 @@
 /* =============================================================================
  *  SECTION HEADING
  *  ---------------------------------------------------------------------------
- *  Consistent eyebrow + title + subtitle block used at the top of each section.
+ *  Consistent eyebrow + title + subtitle block. `title` may be a plain string
+ *  or a Title object { lead, accent, tail } where `accent` is rendered in the
+ *  brand gradient (keeps the sleek look while staying translatable).
  * ========================================================================== */
 
 import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
+import type { Title } from "@/config/translations";
 
 export function SectionHeading({
   eyebrow,
@@ -17,7 +20,7 @@ export function SectionHeading({
   className,
 }: {
   eyebrow?: string;
-  title: React.ReactNode;
+  title: Title | string;
   subtitle?: string;
   align?: "left" | "center";
   className?: string;
@@ -38,7 +41,17 @@ export function SectionHeading({
         </span>
       ) : null}
       <h2 className="mt-3 font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
-        {title}
+        {typeof title === "string" ? (
+          title
+        ) : (
+          <>
+            {title.lead}{" "}
+            {title.accent ? (
+              <span className="text-gradient">{title.accent}</span>
+            ) : null}{" "}
+            {title.tail}
+          </>
+        )}
       </h2>
       {subtitle ? (
         <p
