@@ -73,7 +73,7 @@ export function Footer() {
                 .map((item) => (
                   <li key={item.title}>
                     <Link
-                      href="#custom-orders"
+                      href="/custom-orders"
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {item.title}

@@ -1,14 +1,16 @@
 "use client";
 
 /* =============================================================================
- *  NAVBAR
+ *  NAVBAR  (multi-page)
  *  ---------------------------------------------------------------------------
- *  Sticky glass navigation. Logo + translated nav links + language switcher
- *  + cart button (with badge) + primary CTA. Mobile menu uses shadcn Sheet.
+ *  Sticky glass navigation. Logo + route links (with active state) +
+ *  language switcher + cart button (badge) + primary CTA. Mobile menu uses
+ *  shadcn Sheet with route links.
  * ========================================================================== */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Menu, ArrowRight, ShoppingBag } from "lucide-react";
 import { brand } from "@/config/brand";
@@ -27,8 +29,15 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  // Treat nested routes (e.g. /shop/p1) as active for their section (/shop)
+  return pathname === href || pathname.startsWith(href + "/");
+}
+
 export function Navbar() {
   const { t } = useT();
+  const pathname = usePathname() || "/";
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const cartCount = useCartCount();
@@ -46,27 +55,33 @@ export function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 sm:pt-4"
+      className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:px-4 sm:pt-4"
     >
       <nav
         className={cn(
-          "flex w-full max-w-6xl items-center justify-between gap-2 rounded-2xl px-4 py-2.5 transition-all duration-300 sm:px-5",
+          "flex w-full max-w-6xl items-center justify-between gap-2 rounded-2xl px-3 py-2.5 transition-all duration-300 sm:px-5",
           scrolled
             ? "glass shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)]"
             : "border border-transparent bg-transparent"
         )}
       >
-        <Link href="#top" className="rounded-xl" aria-label={`${brand.name} home`}>
+        <Link href="/" className="rounded-xl" aria-label={`${brand.name} home`}>
           <Logo />
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — show on xl+ to fit all 8 links comfortably */}
         <ul className="hidden items-center gap-0.5 xl:flex">
           {t.nav.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="rounded-lg px-2.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                aria-current={isActive(pathname, item.href) ? "page" : undefined}
+                className={cn(
+                  "rounded-lg px-2.5 py-2 text-sm font-medium transition-colors",
+                  isActive(pathname, item.href)
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
                 {item.label}
               </Link>
@@ -92,15 +107,15 @@ export function Navbar() {
             ) : null}
           </button>
 
-          {/* Desktop CTA */}
+          {/* Desktop CTA — show on lg+ */}
           <Button asChild size="sm" className="hidden lg:inline-flex group">
-            <Link href="#quote">
+            <Link href="/quote">
               {t.hero.primaryCta.label}
               <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>
 
-          {/* Mobile trigger */}
+          {/* Mobile trigger — below xl */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button
@@ -114,25 +129,31 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-[300px] border-border bg-card p-0"
+              className="flex w-[300px] flex-col border-border bg-card p-0"
             >
               <SheetHeader className="px-6 pt-6">
                 <SheetTitle className="text-left">
                   <Logo />
                 </SheetTitle>
               </SheetHeader>
-              <div className="mt-6 flex flex-col gap-1 px-4">
+              <div className="mt-6 flex flex-col gap-0.5 overflow-y-auto px-4">
                 {t.nav.map((item, i) => (
                   <motion.div
                     key={item.href}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 + i * 0.05 }}
+                    transition={{ delay: 0.04 + i * 0.04 }}
                   >
                     <SheetClose asChild>
                       <Link
                         href={item.href}
-                        className="block rounded-xl px-4 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        aria-current={isActive(pathname, item.href) ? "page" : undefined}
+                        className={cn(
+                          "block rounded-xl px-4 py-3 text-base font-medium transition-colors",
+                          isActive(pathname, item.href)
+                            ? "bg-accent text-foreground"
+                            : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                        )}
                       >
                         {item.label}
                       </Link>
@@ -146,7 +167,7 @@ export function Navbar() {
               <div className="mt-auto p-6">
                 <SheetClose asChild>
                   <Button asChild className="w-full">
-                    <Link href="#quote">{t.hero.primaryCta.label}</Link>
+                    <Link href="/quote">{t.hero.primaryCta.label}</Link>
                   </Button>
                 </SheetClose>
                 <p className="mt-4 text-center text-xs text-muted-foreground">

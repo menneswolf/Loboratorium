@@ -81,3 +81,35 @@ Stage Summary:
 - A complete "normal webshop" runs on the same / route: product catalog (config-driven, multilingual), cart drawer, checkout → DB order with reference. Server-side price validation prevents tampering.
 - Custom orders + brand partnerships remain the lead focus (Shop sits right after the hero).
 - Single design file (brand.ts) + single content file (translations.ts) + product catalog (products.ts) — all editable in one place.
+
+---
+Task ID: multi-page-mobile
+Agent: Z.ai Code (main)
+Task: Split the single-page site into a fully usable multi-page website (one route per area, incl. a Shop page + product pages), and ensure it works on mobile.
+
+Work Log:
+- Updated src/config/translations.ts: converted all nav + CTA hrefs from "#anchor" to real routes (/shop, /custom-orders, /brands, /capabilities, /work, /process, /faq, /quote, /about). Added "About" nav entry in all 3 languages. Added new Content fields: home (featured/whatWeDo/processTeaser), about (story/values/cta), pageMeta (per-route titles), common (breadcrumb/404 strings) — fully translated EN/NL/FR.
+- Built PageHeader + Breadcrumb component (fixed-navbar spacer, breadcrumb Home › Section, animated title). title is optional (product page passes only productName).
+- Moved Navbar + Footer + CartDrawer + CheckoutDialog into layout.tsx as global chrome (present on every page). Sticky footer preserved via min-h-screen flex-col wrapper.
+- Rewrote Navbar for multi-page: Next.js <Link> with routes, active-state via usePathname, desktop nav on xl+, Sheet mobile menu with all 8 route links + language switcher. Removed lint-violating setState-in-effect (Sheet onOpenChange handles close-on-navigate).
+- Added hideHeading prop to CustomOrders, ForBrands, Capabilities, Work, Process, Faq, Shop, Quote sections so dedicated pages render PageHeader instead of duplicate headings.
+- Rewrote Shop section: product cards now link to /shop/[slug]; supports featured, showFilter, showViewAll props (reused on home as a 4-product featured strip + on /shop as full catalog).
+- Built home sections (WhatWeDo two-card teaser, ProcessTeaser) + home page composing Hero + featured Shop + WhatWeDo + ProcessTeaser + CtaBand.
+- Created route pages: /shop, /shop/[slug] (product detail: image, price, specs, qty selector, add-to-cart + buy-now, related products, 404 on bad slug), /custom-orders, /brands, /capabilities, /work, /process, /faq, /quote, /about (story + values + stats), and app/not-found.tsx (404 page).
+- Fixed remaining "#anchor" hrefs in footer (→/custom-orders) and cart drawer (→/shop).
+
+Verification (Agent Browser + VLM + DB, desktop 1440 + mobile 375):
+- All 9 routes return 200 (/ , /shop, /shop/[slug], /custom-orders, /brands, /capabilities, /work, /process, /faq, /quote, /about); invalid slug → 404.
+- Every page renders H1 + breadcrumb (Home › Section); product page breadcrumb Home › Shop › Product.
+- Nav active states work; mobile hamburger menu shows all 8 links + language switcher; tapping a link navigates (verified About → /about).
+- Product page: qty controls, add-to-cart, buy-now (opens cart), 4 related products.
+- Cart persists across page navigation (added on product page, badge stays on /shop).
+- Mobile checkout golden path: add → cart → checkout → "Order placed!" → order LOB-W94SN2 saved to DB (€54.50).
+- Language switch works on sub-pages and persists across navigation (NL on /shop → /shop/lattice-vase shows "Rasterwerk vaas").
+- No horizontal overflow on mobile (375) or desktop (1440) across home/shop/product/checkout. VLM confirms mobile + desktop layouts are clean, touch targets adequate, no breakage. Lint clean.
+
+Stage Summary:
+- The site is now a fully usable multi-page website: Home, Shop, Product detail, Custom Orders, For Brands, Capabilities, Work, Process, FAQ, Quote, About + 404 — each with breadcrumb + PageHeader.
+- Cart + checkout + language switching work globally across all pages.
+- Fully mobile-responsive: hamburger menu, 2-col product grid, full-width cart drawer, scrollable checkout dialog, no overflow.
+- All content remains centralized in brand.ts (identity) + translations.ts (copy, 3 languages) + products.ts (catalogue).

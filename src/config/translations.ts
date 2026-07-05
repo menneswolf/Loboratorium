@@ -196,6 +196,61 @@ export type Content = {
     crafted: string;
     revamp: string;
   };
+
+  /* ---- multi-page additions ---- */
+  home: {
+    featured: {
+      eyebrow: string;
+      title: Title;
+      subtitle: string;
+      viewAll: CTA;
+    };
+    whatWeDo: {
+      eyebrow: string;
+      title: Title;
+      subtitle: string;
+      custom: { title: string; text: string; cta: CTA };
+      brands: { title: string; text: string; cta: CTA };
+    };
+    processTeaser: {
+      eyebrow: string;
+      title: Title;
+      subtitle: string;
+      cta: CTA;
+    };
+  };
+
+  about: {
+    eyebrow: string;
+    title: Title;
+    intro: string;
+    story: string[];
+    values: { icon: string; title: string; text: string }[];
+    cta: CTA;
+  };
+
+  pageMeta: {
+    home: string;
+    shop: string;
+    product: string;
+    customOrders: string;
+    brands: string;
+    capabilities: string;
+    work: string;
+    process: string;
+    faq: string;
+    quote: string;
+    about: string;
+  };
+
+  common: {
+    home: string;
+    backToHome: string;
+    viewAll: string;
+    exploreShop: string;
+    notFoundTitle: string;
+    notFoundText: string;
+  };
 };
 
 /* ===========================================================================
@@ -203,13 +258,14 @@ export type Content = {
  * ========================================================================= */
 const en: Content = {
   nav: [
-    { label: "Shop", href: "#shop" },
-    { label: "Custom Orders", href: "#custom-orders" },
-    { label: "For Brands", href: "#brands" },
-    { label: "Capabilities", href: "#capabilities" },
-    { label: "Work", href: "#work" },
-    { label: "Process", href: "#process" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Shop", href: "/shop" },
+    { label: "Custom Orders", href: "/custom-orders" },
+    { label: "For Brands", href: "/brands" },
+    { label: "Capabilities", href: "/capabilities" },
+    { label: "Work", href: "/work" },
+    { label: "Process", href: "/process" },
+    { label: "About", href: "/about" },
+    { label: "FAQ", href: "/faq" },
   ],
 
   hero: {
@@ -217,8 +273,8 @@ const en: Content = {
     title: { lead: "We turn ideas into", accent: "tangible things." },
     subtitle:
       "Loboratorium is a custom 3D printing studio for makers, brands and businesses. From a one-off prototype to a branded production run — we print it, finish it, and ship it.",
-    primaryCta: { label: "Request a custom quote", href: "#quote" },
-    secondaryCta: { label: "Partner with us", href: "#brands" },
+    primaryCta: { label: "Request a custom quote", href: "/quote" },
+    secondaryCta: { label: "Partner with us", href: "/brands" },
     stats: [
       { value: "12k+", label: "Parts printed" },
       { value: "40+", label: "Materials" },
@@ -309,7 +365,7 @@ const en: Content = {
       { icon: "pen-tool", title: "Design for print", text: "No CAD? No problem. Our designers optimise or model your part from scratch for clean, reliable prints." },
       { icon: "sparkles", title: "Finishing & assembly", text: "Sanding, painting, vapor smoothing, thread inserts and assembly — your part arrives ready to use." },
     ],
-    cta: { label: "Start a custom order", href: "#quote" },
+    cta: { label: "Start a custom order", href: "/quote" },
   },
 
   brands: {
@@ -329,7 +385,7 @@ const en: Content = {
       { n: "03", title: "Produce", text: "We manufacture, finish and QC every unit." },
       { n: "04", title: "Deliver", text: "Branded, packed and shipped to spec." },
     ],
-    cta: { label: "Become a partner", href: "#quote" },
+    cta: { label: "Become a partner", href: "/quote" },
     pathLabel: "Partnership path",
     pathTitle: "From intro to delivery",
   },
@@ -440,7 +496,7 @@ const en: Content = {
     title: "Got an idea that needs printing?",
     subtitle:
       "Send it over. We'll quote it within 24 hours — no commitment, no jargon.",
-    button: { label: "Request a quote", href: "#quote" },
+    button: { label: "Request a quote", href: "/quote" },
   },
 
   footer: {
@@ -452,6 +508,81 @@ const en: Content = {
     crafted: "Crafted with precision in Belgium",
     revamp: "Edit your brand in",
   },
+
+  home: {
+    featured: {
+      eyebrow: "From the shop",
+      title: { lead: "Featured pieces,", accent: "ready to ship." },
+      subtitle:
+        "A taste of what we make. Browse the full catalogue for more, or commission something entirely your own.",
+      viewAll: { label: "View all products", href: "/shop" },
+    },
+    whatWeDo: {
+      eyebrow: "What we do",
+      title: { lead: "Two ways to", accent: "work with us." },
+      subtitle:
+        "Whether you need a single bespoke part or a branded production run, we've got a path for you.",
+      custom: {
+        title: "Custom orders",
+        text: "One-off prototypes, replacement parts, personalised gifts and low-batch runs — designed, printed and finished to your spec.",
+        cta: { label: "Explore custom orders", href: "/custom-orders" },
+      },
+      brands: {
+        title: "For brands",
+        text: "White-label manufacturing, wholesale pricing and licensed collaborations — built around your brand's roadmap.",
+        cta: { label: "Partner with us", href: "/brands" },
+      },
+    },
+    processTeaser: {
+      eyebrow: "How it works",
+      title: { lead: "From idea to part in", accent: "four steps." },
+      subtitle:
+        "A simple, transparent process — share your brief, get a quote in 24h, we print and finish, then ship worldwide.",
+      cta: { label: "See the full process", href: "/process" },
+    },
+  },
+
+  about: {
+    eyebrow: "About us",
+    title: { lead: "A Belgian studio obsessed with", accent: "making things real." },
+    intro:
+      "Loboratorium is a custom 3D printing studio based in Belgium. We help makers, brands and businesses turn ideas into physical objects — from a single prototype to a production run.",
+    story: [
+      "What started as a garage project quickly grew into a full studio. We invested in multiple print technologies, a wall of materials, and a post-processing bench — because a great print isn't finished when the printer stops.",
+      "Today we work with everyone from hobbyists with a sketch to international brands needing thousands of units. The common thread: we treat every part as if we were going to use it ourselves.",
+      "We believe additive manufacturing should be accessible, fast and genuinely useful. No jargon, no inflated quotes — just well-made parts, delivered on time.",
+    ],
+    values: [
+      { icon: "sparkles", title: "Quality first", text: "Every part is inspected and finished by hand before it leaves the studio." },
+      { icon: "clock", title: "Fast turnaround", text: "Most orders ship in days, not weeks. We quote within 24 hours." },
+      { icon: "shield-check", title: "Honest & confidential", text: "Transparent pricing and NDAs for brand work. Your IP stays yours." },
+      { icon: "boxes", title: "Materials for every job", text: "40+ filaments and resins in stock — and we'll source anything else." },
+    ],
+    cta: { label: "Start a project", href: "/quote" },
+  },
+
+  pageMeta: {
+    home: "Home",
+    shop: "Shop",
+    product: "Product",
+    customOrders: "Custom Orders",
+    brands: "For Brands",
+    capabilities: "Capabilities",
+    work: "Work",
+    process: "Process",
+    faq: "FAQ",
+    quote: "Request a Quote",
+    about: "About",
+  },
+
+  common: {
+    home: "Home",
+    backToHome: "Back to home",
+    viewAll: "View all",
+    exploreShop: "Explore the shop",
+    notFoundTitle: "Page not found",
+    notFoundText: "The page you're looking for doesn't exist or has moved.",
+  },
 };
 
 /* ===========================================================================
@@ -459,21 +590,22 @@ const en: Content = {
  * ========================================================================= */
 const nl: Content = {
   nav: [
-    { label: "Shop", href: "#shop" },
-    { label: "Op maat", href: "#custom-orders" },
-    { label: "Voor merken", href: "#brands" },
-    { label: "Mogelijkheden", href: "#capabilities" },
-    { label: "Werk", href: "#work" },
-    { label: "Proces", href: "#process" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Shop", href: "/shop" },
+    { label: "Op maat", href: "/custom-orders" },
+    { label: "Voor merken", href: "/brands" },
+    { label: "Mogelijkheden", href: "/capabilities" },
+    { label: "Werk", href: "/work" },
+    { label: "Proces", href: "/process" },
+    { label: "Over ons", href: "/about" },
+    { label: "FAQ", href: "/faq" },
   ],
   hero: {
     eyebrow: "3D-printen op maat · Made in Belgium",
     title: { lead: "Wij maken van ideeën", accent: "tastbare dingen." },
     subtitle:
       "Loboratorium is een 3D-printstudio op maat voor makers, merken en bedrijven. Van een uniek prototype tot een merkgebonden productielijn — wij printen, afwerken en verzenden het.",
-    primaryCta: { label: "Vraag een offerte op maat", href: "#quote" },
-    secondaryCta: { label: "Word onze partner", href: "#brands" },
+    primaryCta: { label: "Vraag een offerte op maat", href: "/quote" },
+    secondaryCta: { label: "Word onze partner", href: "/brands" },
     stats: [
       { value: "12k+", label: "Onderdelen geprint" },
       { value: "40+", label: "Materialen" },
@@ -550,7 +682,7 @@ const nl: Content = {
       { icon: "pen-tool", title: "Ontwerp voor print", text: "Geen CAD? Geen probleem. Onze ontwerpers optimaliseren of modelleren jouw stuk from scratch voor cleane, betrouwbare prints." },
       { icon: "sparkles", title: "Afwerking & assemblage", text: "Schuren, schilderen, vapor smoothing, draadinserts en assemblage — jouw stuk komt gebruiksklaar aan." },
     ],
-    cta: { label: "Start een op-maat-bestelling", href: "#quote" },
+    cta: { label: "Start een op-maat-bestelling", href: "/quote" },
   },
   brands: {
     eyebrow: "Voor merken",
@@ -569,7 +701,7 @@ const nl: Content = {
       { n: "03", title: "Productie", text: "We produceren, werken af en QC'en elk stuk." },
       { n: "04", title: "Levering", text: "Gemerkt, verpakt en verzonden volgens afspraak." },
     ],
-    cta: { label: "Word partner", href: "#quote" },
+    cta: { label: "Word partner", href: "/quote" },
     pathLabel: "Partnerschap-traject",
     pathTitle: "Van kennismaking tot levering",
   },
@@ -674,7 +806,7 @@ const nl: Content = {
     title: "Heb je een idee dat geprint moet worden?",
     subtitle:
       "Stuur het door. We bieden binnen 24 uur — zonder verplichting, zonder jargon.",
-    button: { label: "Vraag een offerte", href: "#quote" },
+    button: { label: "Vraag een offerte", href: "/quote" },
   },
   footer: {
     explore: "Ontdek",
@@ -685,6 +817,81 @@ const nl: Content = {
     crafted: "Met precisie gemaakt in België",
     revamp: "Pas je merk aan in",
   },
+
+  home: {
+    featured: {
+      eyebrow: "Uit de shop",
+      title: { lead: "Uitgelichte stukken,", accent: "klaar om te verzenden." },
+      subtitle:
+        "Een voorproefje van wat wij maken. Blader door de volledige catalogus voor meer, of laat iets helemaal op maat maken.",
+      viewAll: { label: "Bekijk alle producten", href: "/shop" },
+    },
+    whatWeDo: {
+      eyebrow: "Wat we doen",
+      title: { lead: "Twee manieren om", accent: "samen te werken." },
+      subtitle:
+        "Of je nu één uniek stuk nodig hebt of een merkgebonden productielijn, we hebben een traject voor je.",
+      custom: {
+        title: "Op maat",
+        text: "Unieke prototypes, vervangonderdelen, gepersonaliseerde geschenken en kleine series — ontworpen, geprint en afgewerkt volgens jouw wensen.",
+        cta: { label: "Ontdek op-maat-bestellingen", href: "/custom-orders" },
+      },
+      brands: {
+        title: "Voor merken",
+        text: "White-label productie, groothandelprijzen en gelicentieerde collabs — afgestemd op de roadmap van jouw merk.",
+        cta: { label: "Word onze partner", href: "/brands" },
+      },
+    },
+    processTeaser: {
+      eyebrow: "Hoe het werkt",
+      title: { lead: "Van idee naar stuk in", accent: "vier stappen." },
+      subtitle:
+        "Een eenvoudig, transparant proces — deel je brief, krijg binnen 24u een offerte, wij printen en werken af, dan wereldwijd verzenden.",
+      cta: { label: "Bekijk het volledige proces", href: "/process" },
+    },
+  },
+
+  about: {
+    eyebrow: "Over ons",
+    title: { lead: "Een Belgische studio geobsedeerd door", accent: "dingen echt maken." },
+    intro:
+      "Loboratorium is een 3D-printstudio op maat, gevestigd in België. We helpen makers, merken en bedrijven ideeën om te zetten in fysieke objecten — van één prototype tot een productielijn.",
+    story: [
+      "Wat begon als een garageproject groeide snel uit tot een volledige studio. We investeerden in meerdere printtechnologieën, een muur vol materialen en een nabewerkingsbank — want een goede print is niet af als de printer stopt.",
+      "Vandaag werken we met iedereen, van hobbyisten met een schets tot internationale merken die duizenden stuks nodig hebben. De rode draad: we behandelen elk stuk alsof we het zelf zouden gebruiken.",
+      "We geloven dat additive manufacturing toegankelijk, snel en écht nuttig hoort te zijn. Geen jargon, geen opgeblazen offertes — gewoon goed gemaakte stukken, op tijd geleverd.",
+    ],
+    values: [
+      { icon: "sparkles", title: "Kwaliteit voorop", text: "Elk stuk wordt geïnspecteerd en met de hand afgewerkt voordat het de studio verlaat." },
+      { icon: "clock", title: "Snelle levering", text: "De meeste bestellingen worden in dagen geleverd, niet weken. We bieden binnen 24u." },
+      { icon: "shield-check", title: "Eerlijk & vertrouwelijk", text: "Transparante prijzen en NDA's voor merkwerk. Jouw IP blijft van jou." },
+      { icon: "boxes", title: "Materialen voor elke job", text: "40+ filaments en harsen op voorraad — en we sourcen alles wat ontbreekt." },
+    ],
+    cta: { label: "Start een project", href: "/quote" },
+  },
+
+  pageMeta: {
+    home: "Home",
+    shop: "Shop",
+    product: "Product",
+    customOrders: "Op maat",
+    brands: "Voor merken",
+    capabilities: "Mogelijkheden",
+    work: "Werk",
+    process: "Proces",
+    faq: "FAQ",
+    quote: "Offerte aanvragen",
+    about: "Over ons",
+  },
+
+  common: {
+    home: "Home",
+    backToHome: "Terug naar home",
+    viewAll: "Bekijk alles",
+    exploreShop: "Bekijk de shop",
+    notFoundTitle: "Pagina niet gevonden",
+    notFoundText: "De pagina die je zoekt bestaat niet of is verplaatst.",
+  },
 };
 
 /* ===========================================================================
@@ -692,21 +899,22 @@ const nl: Content = {
  * ========================================================================= */
 const fr: Content = {
   nav: [
-    { label: "Boutique", href: "#shop" },
-    { label: "Sur mesure", href: "#custom-orders" },
-    { label: "Pour marques", href: "#brands" },
-    { label: "Savoir-faire", href: "#capabilities" },
-    { label: "Réalisations", href: "#work" },
-    { label: "Processus", href: "#process" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Boutique", href: "/shop" },
+    { label: "Sur mesure", href: "/custom-orders" },
+    { label: "Pour marques", href: "/brands" },
+    { label: "Savoir-faire", href: "/capabilities" },
+    { label: "Réalisations", href: "/work" },
+    { label: "Processus", href: "/process" },
+    { label: "À propos", href: "/about" },
+    { label: "FAQ", href: "/faq" },
   ],
   hero: {
     eyebrow: "Impression 3D sur mesure · Fabriqué en Belgique",
     title: { lead: "Nous transformons vos idées en", accent: "objets réels." },
     subtitle:
       "Loboratorium est un studio d'impression 3D sur mesure pour les créateurs, marques et entreprises. Du prototype unique à la production de marque — nous imprimons, finissons et expédions.",
-    primaryCta: { label: "Demander un devis sur mesure", href: "#quote" },
-    secondaryCta: { label: "Devenir partenaire", href: "#brands" },
+    primaryCta: { label: "Demander un devis sur mesure", href: "/quote" },
+    secondaryCta: { label: "Devenir partenaire", href: "/brands" },
     stats: [
       { value: "12k+", label: "Pièces imprimées" },
       { value: "40+", label: "Matériaux" },
@@ -783,7 +991,7 @@ const fr: Content = {
       { icon: "pen-tool", title: "Conception pour impression", text: "Pas de CAO ? Aucun souci. Nos designers optimisent ou modélisent votre pièce from scratch pour des impressions propres et fiables." },
       { icon: "sparkles", title: "Finition & assemblage", text: "Ponçage, peinture, lissage vapeur, inserts filetés et assemblage — votre pièce arrive prête à l'emploi." },
     ],
-    cta: { label: "Démarrer une commande sur mesure", href: "#quote" },
+    cta: { label: "Démarrer une commande sur mesure", href: "/quote" },
   },
   brands: {
     eyebrow: "Pour marques",
@@ -802,7 +1010,7 @@ const fr: Content = {
       { n: "03", title: "Production", text: "Nous fabriquons, finissons et contrôlons chaque unité." },
       { n: "04", title: "Livraison", text: "Marqué, emballé et expédié selon le cahier des charges." },
     ],
-    cta: { label: "Devenir partenaire", href: "#quote" },
+    cta: { label: "Devenir partenaire", href: "/quote" },
     pathLabel: "Parcours de partenariat",
     pathTitle: "Du premier contact à la livraison",
   },
@@ -907,7 +1115,7 @@ const fr: Content = {
     title: "Une idée à imprimer ?",
     subtitle:
       "Envoyez-la-nous. Nous devisons sous 24h — sans engagement, sans jargon.",
-    button: { label: "Demander un devis", href: "#quote" },
+    button: { label: "Demander un devis", href: "/quote" },
   },
   footer: {
     explore: "Explorer",
@@ -917,6 +1125,81 @@ const fr: Content = {
     rights: "Tous droits réservés.",
     crafted: "Conçu avec précision en Belgique",
     revamp: "Personnalisez votre marque dans",
+  },
+
+  home: {
+    featured: {
+      eyebrow: "De la boutique",
+      title: { lead: "Pièces en vedette,", accent: "prêtes à expédier." },
+      subtitle:
+        "Un avant-goût de ce que nous créons. Parcourez le catalogue complet pour plus, ou commandez une pièce entièrement sur mesure.",
+      viewAll: { label: "Voir tous les produits", href: "/shop" },
+    },
+    whatWeDo: {
+      eyebrow: "Ce que nous faisons",
+      title: { lead: "Deux façons de", accent: "travailler avec nous." },
+      subtitle:
+        "Que vous ayez besoin d'une pièce unique ou d'une production de marque, nous avons un parcours pour vous.",
+      custom: {
+        title: "Sur mesure",
+        text: "Prototypes uniques, pièces de remplacement, cadeaux personnalisés et petites séries — conçus, imprimés et finis selon vos specs.",
+        cta: { label: "Découvrir le sur mesure", href: "/custom-orders" },
+      },
+      brands: {
+        title: "Pour marques",
+        text: "Fabrication white-label, tarifs de gros et collaborations sous licence — calés sur la roadmap de votre marque.",
+        cta: { label: "Devenir partenaire", href: "/brands" },
+      },
+    },
+    processTeaser: {
+      eyebrow: "Comment ça marche",
+      title: { lead: "De l'idée à la pièce en", accent: "quatre étapes." },
+      subtitle:
+        "Un processus simple et transparent — partagez votre brief, recevez un devis sous 24h, nous imprimons et finissons, puis expédition dans le monde entier.",
+      cta: { label: "Voir le processus complet", href: "/process" },
+    },
+  },
+
+  about: {
+    eyebrow: "À propos",
+    title: { lead: "Un studio belge obsédé par", accent: "rendre les choses réelles." },
+    intro:
+      "Loboratorium est un studio d'impression 3D sur mesure basé en Belgique. Nous aidons créateurs, marques et entreprises à transformer des idées en objets physiques — du prototype unique à la production en série.",
+    story: [
+      "Ce qui a commencé comme un projet de garage s'est rapidement transformé en un studio complet. Nous avons investi dans plusieurs technologies d'impression, un mur de matériaux et un banc de post-finition — car une bonne impression n'est pas finie quand l'imprimante s'arrête.",
+      "Aujourd'hui, nous travaillons avec tout le monde, des hobbyistes avec un croquis aux marques internationales needing des milliers d'unités. Le fil conducteur : nous traitons chaque pièce comme si nous allions l'utiliser nous-mêmes.",
+      "Nous croyons que la fabrication additive doit être accessible, rapide et vraiment utile. Pas de jargon, pas de devis gonflés — juste des pièces bien faites, livrées à temps.",
+    ],
+    values: [
+      { icon: "sparkles", title: "La qualité d'abord", text: "Chaque pièce est inspectée et finie à la main avant de quitter le studio." },
+      { icon: "clock", title: "Livraison rapide", text: "La plupart des commandes sont expédiées en jours, pas en semaines. Devis sous 24h." },
+      { icon: "shield-check", title: "Honnête & confidentiel", text: "Tarification transparente et NDA pour les projets de marque. Votre IP reste vôtre." },
+      { icon: "boxes", title: "Matériaux pour chaque job", text: "40+ filaments et résines en stock — et nous sourçons tout le reste." },
+    ],
+    cta: { label: "Démarrer un projet", href: "/quote" },
+  },
+
+  pageMeta: {
+    home: "Accueil",
+    shop: "Boutique",
+    product: "Produit",
+    customOrders: "Sur mesure",
+    brands: "Pour marques",
+    capabilities: "Savoir-faire",
+    work: "Réalisations",
+    process: "Processus",
+    faq: "FAQ",
+    quote: "Demander un devis",
+    about: "À propos",
+  },
+
+  common: {
+    home: "Accueil",
+    backToHome: "Retour à l'accueil",
+    viewAll: "Voir tout",
+    exploreShop: "Parcourir la boutique",
+    notFoundTitle: "Page introuvable",
+    notFoundText: "La page que vous cherchez n'existe pas ou a été déplacée.",
   },
 };
 

@@ -16,19 +16,21 @@ import { useT } from "@/lib/i18n";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "@/components/motion/reveal";
 
-export function Faq() {
+export function Faq({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const { t } = useT();
   const f = t.faq;
 
   return (
-    <section id="faq" className="relative py-20 sm:py-28">
+    <section id="faq" className={hideHeading ? "relative pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative py-20 sm:py-28"}>
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <SectionHeading
-          eyebrow={f.eyebrow}
-          title={f.title}
-          align="center"
-        />
-        <Reveal delay={0.1} className="mt-12">
+        {!hideHeading ? (
+          <SectionHeading
+            eyebrow={f.eyebrow}
+            title={f.title}
+            align="center"
+          />
+        ) : null}
+        <Reveal delay={0.1} className={hideHeading ? "mt-8" : "mt-12"}>
           <Accordion
             type="single"
             collapsible

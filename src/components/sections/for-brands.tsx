@@ -17,12 +17,12 @@ import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 
-export function ForBrands() {
+export function ForBrands({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const { t } = useT();
   const b = t.brands;
 
   return (
-    <section id="brands" className="relative overflow-hidden py-20 sm:py-28">
+    <section id="brands" className={hideHeading ? "relative overflow-hidden pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative overflow-hidden py-20 sm:py-28"}>
       {/* backdrop */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-px w-full max-w-6xl -translate-x-1/2 hairline" />
@@ -31,18 +31,20 @@ export function ForBrands() {
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionHeading
-          eyebrow={b.eyebrow}
-          title={
-            <>
-              Deals that <span className="text-gradient">scale</span> with your
-              brand.
-            </>
-          }
-          subtitle={b.subtitle}
-        />
+        {!hideHeading ? (
+          <SectionHeading
+            eyebrow={b.eyebrow}
+            title={
+              <>
+                Deals that <span className="text-gradient">scale</span> with your
+                brand.
+              </>
+            }
+            subtitle={b.subtitle}
+          />
+        ) : null}
 
-        <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
+        <div className={hideHeading ? "mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12" : "mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12"}>
           {/* Benefits */}
           <StaggerGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {b.benefits.map((item) => (

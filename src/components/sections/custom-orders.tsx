@@ -17,20 +17,22 @@ import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 
-export function CustomOrders() {
+export function CustomOrders({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const { t } = useT();
   const c = t.customOrders;
 
   return (
-    <section id="custom-orders" className="relative py-20 sm:py-28">
+    <section id="custom-orders" className={hideHeading ? "relative pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative py-20 sm:py-28"}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionHeading
-          eyebrow={c.eyebrow}
-          title={c.title}
-          subtitle={c.subtitle}
-        />
+        {!hideHeading ? (
+          <SectionHeading
+            eyebrow={c.eyebrow}
+            title={c.title}
+            subtitle={c.subtitle}
+          />
+        ) : null}
 
-        <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_0.8fr] lg:gap-12">
+        <div className={hideHeading ? "mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_0.8fr] lg:gap-12" : "mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_0.8fr] lg:gap-12"}>
           {/* Feature grid */}
           <StaggerGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {c.items.map((item) => (

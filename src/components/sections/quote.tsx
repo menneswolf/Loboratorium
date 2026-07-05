@@ -57,7 +57,7 @@ const empty: FormState = {
   fileUrl: "",
 };
 
-export function Quote() {
+export function Quote({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const { t } = useT();
   const q = t.quote;
   const { toast } = useToast();
@@ -110,7 +110,7 @@ export function Quote() {
   };
 
   return (
-    <section id="quote" className="relative overflow-hidden py-20 sm:py-28">
+    <section id="quote" className={hideHeading ? "relative overflow-hidden pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative overflow-hidden py-20 sm:py-28"}>
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="accent-glow absolute left-1/2 top-1/4 h-72 w-[680px] -translate-x-1/2" />
       </div>
@@ -119,11 +119,13 @@ export function Quote() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           {/* Left rail */}
           <div>
-            <SectionHeading
-              eyebrow={q.eyebrow}
-              title={q.title}
-              subtitle={q.subtitle}
-            />
+            {!hideHeading ? (
+              <SectionHeading
+                eyebrow={q.eyebrow}
+                title={q.title}
+                subtitle={q.subtitle}
+              />
+            ) : null}
 
             <ul className="mt-8 space-y-4">
               {q.reassurance.map((r) => (

@@ -11,27 +11,29 @@ import { useT } from "@/lib/i18n";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "@/components/motion/reveal";
 
-export function Process() {
+export function Process({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const { t } = useT();
   const p = t.process;
 
   return (
-    <section id="process" className="relative overflow-hidden py-20 sm:py-28">
+    <section id="process" className={hideHeading ? "relative overflow-hidden pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative overflow-hidden py-20 sm:py-28"}>
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-72 w-[680px] -translate-x-1/2 bg-brand-accent/5 blur-3xl" />
       </div>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionHeading
-          eyebrow={p.eyebrow}
-          title={
-            <>
-              From idea in your head to{" "}
-              <span className="text-gradient">part in your hand.</span>
-            </>
-          }
-        />
+        {!hideHeading ? (
+          <SectionHeading
+            eyebrow={p.eyebrow}
+            title={
+              <>
+                From idea in your head to{" "}
+                <span className="text-gradient">part in your hand.</span>
+              </>
+            }
+          />
+        ) : null}
 
-        <div className="relative mt-16">
+        <div className="relative mt-12">
           {/* connecting line (desktop) */}
           <div className="pointer-events-none absolute left-0 right-0 top-7 hidden h-px bg-border lg:block" />
           <motion.div

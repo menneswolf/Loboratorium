@@ -78,7 +78,7 @@ export function CartDrawer() {
             </p>
             <p className="mt-1 text-sm text-muted-foreground">{s.cart.emptyHint}</p>
             <Button asChild variant="outline" className="mt-5" onClick={closeDrawer}>
-              <Link href="#shop">{s.cart.browse}</Link>
+              <Link href="/shop">{s.cart.browse}</Link>
             </Button>
           </div>
         ) : (

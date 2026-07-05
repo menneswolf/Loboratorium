@@ -12,26 +12,28 @@ import { Icon } from "@/components/brand/icon";
 import { SectionHeading } from "./section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 
-export function Capabilities() {
+export function Capabilities({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const { t } = useT();
   const c = t.capabilities;
 
   return (
-    <section id="capabilities" className="relative py-20 sm:py-28">
+    <section id="capabilities" className={hideHeading ? "relative pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative py-20 sm:py-28"}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionHeading
-          eyebrow={c.eyebrow}
-          title={
-            <>
-              A studio built for{" "}
-              <span className="text-gradient">anything you can model.</span>
-            </>
-          }
-          subtitle={c.subtitle}
-        />
+        {!hideHeading ? (
+          <SectionHeading
+            eyebrow={c.eyebrow}
+            title={
+              <>
+                A studio built for{" "}
+                <span className="text-gradient">anything you can model.</span>
+              </>
+            }
+            subtitle={c.subtitle}
+          />
+        ) : null}
 
         {/* Tech grid */}
-        <StaggerGroup className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StaggerGroup className={hideHeading ? "mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" : "mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"}>
           {c.tech.map((t) => (
             <StaggerItem key={t.name}>
               <motion.div

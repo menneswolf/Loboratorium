@@ -14,24 +14,26 @@ import { SectionHeading } from "./section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 
-export function Work() {
+export function Work({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const { t } = useT();
   const w = t.work;
 
   return (
-    <section id="work" className="relative py-20 sm:py-28">
+    <section id="work" className={hideHeading ? "relative pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative py-20 sm:py-28"}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionHeading
-          eyebrow={w.eyebrow}
-          title={
-            <>
-              A glimpse of <span className="text-gradient">what we make.</span>
-            </>
-          }
-          subtitle={w.subtitle}
-        />
+        {!hideHeading ? (
+          <SectionHeading
+            eyebrow={w.eyebrow}
+            title={
+              <>
+                A glimpse of <span className="text-gradient">what we make.</span>
+              </>
+            }
+            subtitle={w.subtitle}
+          />
+        ) : null}
 
-        <StaggerGroup className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StaggerGroup className={hideHeading ? "mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" : "mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"}>
           {w.items.map((item, i) => (
             <StaggerItem
               key={item.title}
