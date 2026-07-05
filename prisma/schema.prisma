@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model QuoteRequest {
@@ -24,19 +25,34 @@ model QuoteRequest {
 }
 
 model Order {
-  id         String      @id @default(cuid())
-  ref        String      @unique
-  email      String
-  name       String
-  address    String
-  city       String
-  postalCode String
-  country    String
-  total      Float
-  status     String      @default("pending")
-  locale     String      @default("en")
-  items      OrderItem[]
-  createdAt  DateTime    @default(now())
+  id          String      @id @default(cuid())
+  ref         String      @unique
+  email       String
+  name        String
+  address     String
+  houseNumber String?
+  city        String
+  postalCode  String
+  country     String
+  total       Float
+  // pending_payment | paid | processing | shipped | delivered | cancelled | failed | expired
+  status      String      @default("pending_payment")
+  locale      String      @default("en")
+  items       OrderItem[]
+
+  // Payment (Mollie)
+  paymentId     String?
+  paymentStatus String?
+  paidAt        DateTime?
+
+  // Shipping (Sendcloud)
+  shippingMethod    String?
+  sendcloudParcelId String?
+  trackingNumber    String?
+  trackingUrl       String?
+  labelUrl          String?
+
+  createdAt   DateTime    @default(now())
 }
 
 model OrderItem {

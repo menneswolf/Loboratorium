@@ -3,11 +3,14 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { getAllProducts } from "@/lib/products";
 import { rateLimit } from "@/lib/rate-limit";
+import { getMollie, isMollieConfigured, eur } from "@/lib/mollie";
+import { baseUrl } from "@/lib/base-url";
 
 const orderSchema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email().max(160),
   address: z.string().min(4).max(300),
+  houseNumber: z.string().max(20).optional().or(z.literal("")),
   city: z.string().min(2).max(120),
   postalCode: z.string().min(2).max(20),
   country: z.string().min(2).max(120),
@@ -97,15 +100,56 @@ export async function POST(req: Request) {
         email: parsed.data.email,
         name: parsed.data.name,
         address: parsed.data.address,
+        houseNumber: parsed.data.houseNumber || null,
         city: parsed.data.city,
         postalCode: parsed.data.postalCode,
         country: parsed.data.country,
         total,
+        // No online payment configured yet → keep the email-flow behaviour.
+        status: isMollieConfigured() ? "pending_payment" : "pending",
         locale: parsed.data.locale,
         items: { create: lineItems },
       },
       include: { items: true },
     });
+
+    // If Mollie is configured, create a payment and hand back its hosted
+    // checkout URL. The client redirects there; the payment is confirmed by
+    // the webhook (/api/webhooks/mollie), never by the browser redirect.
+    if (isMollieConfigured()) {
+      try {
+        const origin = baseUrl(req);
+        const payment = await getMollie().payments.create({
+          amount: eur(total),
+          description: `Loboratorium order ${order.ref}`,
+          redirectUrl: `${origin}/order/${order.ref}`,
+          webhookUrl: `${origin}/api/webhooks/mollie`,
+          metadata: { orderId: order.id, ref: order.ref },
+        });
+
+        await db.order.update({
+          where: { id: order.id },
+          data: { paymentId: payment.id, paymentStatus: payment.status },
+        });
+
+        const checkoutUrl = payment.getCheckoutUrl();
+        return NextResponse.json(
+          { ok: true, ref: order.ref, id: order.id, checkoutUrl },
+          { status: 201 }
+        );
+      } catch (err) {
+        console.error("[orders] mollie payment failed:", err);
+        // Roll the order back to the manual flow rather than losing it.
+        await db.order.update({
+          where: { id: order.id },
+          data: { status: "pending" },
+        });
+        return NextResponse.json(
+          { ok: false, error: "Could not start payment. Please try again." },
+          { status: 502 }
+        );
+      }
+    }
 
     return NextResponse.json({ ok: true, ref: order.ref, id: order.id }, { status: 201 });
   } catch (err) {

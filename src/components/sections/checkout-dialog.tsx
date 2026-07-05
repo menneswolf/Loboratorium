@@ -29,6 +29,7 @@ type FormState = {
   name: string;
   email: string;
   address: string;
+  houseNumber: string;
   city: string;
   postalCode: string;
   country: string;
@@ -38,6 +39,7 @@ const empty: FormState = {
   name: "",
   email: "",
   address: "",
+  houseNumber: "",
   city: "",
   postalCode: "",
   country: "Belgium",
@@ -74,6 +76,7 @@ export function CheckoutDialog() {
     if (form.name.trim().length < 2) e.name = s.checkout.errRequired;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = s.checkout.errEmail;
     if (form.address.trim().length < 4) e.address = s.checkout.errRequired;
+    if (form.houseNumber.trim().length < 1) e.houseNumber = s.checkout.errRequired;
     if (form.city.trim().length < 2) e.city = s.checkout.errRequired;
     if (form.postalCode.trim().length < 2) e.postalCode = s.checkout.errRequired;
     if (form.country.trim().length < 2) e.country = s.checkout.errRequired;
@@ -95,6 +98,10 @@ export function CheckoutDialog() {
       if (!res.ok || !data.ok) throw new Error(data.error || "Order failed");
       setOrderRef(data.ref);
       clear();
+      if (data.checkoutUrl) {
+        window.location.assign(data.checkoutUrl);
+        return;
+      }
       setStatus("success");
     } catch {
       setStatus("idle");
@@ -185,13 +192,22 @@ export function CheckoutDialog() {
                   />
                 </Field>
               </div>
-              <Field label={s.checkout.address} error={errors.address} required>
-                <Input
-                  value={form.address}
-                  onChange={(e) => update("address", e.target.value)}
-                  autoComplete="street-address"
-                />
-              </Field>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_8rem]">
+                <Field label={s.checkout.address} error={errors.address} required>
+                  <Input
+                    value={form.address}
+                    onChange={(e) => update("address", e.target.value)}
+                    autoComplete="address-line1"
+                  />
+                </Field>
+                <Field label={s.checkout.houseNumber} error={errors.houseNumber} required>
+                  <Input
+                    value={form.houseNumber}
+                    onChange={(e) => update("houseNumber", e.target.value)}
+                    autoComplete="address-line2"
+                  />
+                </Field>
+              </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <Field label={s.checkout.postalCode} error={errors.postalCode} required>
                   <Input

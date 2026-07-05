@@ -86,6 +86,7 @@ export type Content = {
       name: string;
       email: string;
       address: string;
+      houseNumber: string;
       city: string;
       postalCode: string;
       country: string;
@@ -334,17 +335,18 @@ const en: Content = {
       name: "Full name",
       email: "Email",
       address: "Address",
+      houseNumber: "No.",
       city: "City",
       postalCode: "Postal code",
       country: "Country",
       paymentNote:
-        "No online payment needed — we'll send a secure payment link and order confirmation by email.",
+        "You will be redirected to Mollie to pay securely. Your order is confirmed when payment succeeds.",
       placeOrder: "Place order",
       processing: "Placing order…",
       back: "Back to cart",
       successTitle: "Order placed!",
       successMsg:
-        "Thanks for your order. We've received it and will email you a confirmation and payment link shortly.",
+        "Thanks for your order. We've received it and will email you a confirmation shortly.",
       orderRef: "Your order reference",
       close: "Close",
       errRequired: "This field is required",
@@ -652,17 +654,18 @@ const nl: Content = {
       name: "Volledige naam",
       email: "E-mailadres",
       address: "Adres",
+      houseNumber: "Nr.",
       city: "Stad",
       postalCode: "Postcode",
       country: "Land",
       paymentNote:
-        "Geen online betaling nodig — wij sturen je een veilige betaallink en orderbevestiging via e-mail.",
+        "Je wordt doorgestuurd naar Mollie om veilig te betalen. Je bestelling is bevestigd zodra de betaling lukt.",
       placeOrder: "Bestelling plaatsen",
       processing: "Bestelling plaatsen…",
       back: "Terug naar winkelmandje",
       successTitle: "Bestelling geplaatst!",
       successMsg:
-        "Bedankt voor je bestelling. We hebben ze ontvangen en sturen je binnenkort een bevestiging en betaallink via e-mail.",
+        "Bedankt voor je bestelling. We hebben ze ontvangen en sturen je binnenkort een bevestiging via e-mail.",
       orderRef: "Je referentienummer",
       close: "Sluiten",
       errRequired: "Dit veld is verplicht",
@@ -961,17 +964,18 @@ const fr: Content = {
       name: "Nom complet",
       email: "E-mail",
       address: "Adresse",
+      houseNumber: "No.",
       city: "Ville",
       postalCode: "Code postal",
       country: "Pays",
       paymentNote:
-        "Aucun paiement en ligne requis — nous vous enverrons un lien de paiement sécurisé et une confirmation par e-mail.",
+        "Vous serez redirige vers Mollie pour payer en securite. Votre commande est confirmee lorsque le paiement reussit.",
       placeOrder: "Valider la commande",
       processing: "Validation en cours…",
       back: "Retour au panier",
       successTitle: "Commande validée !",
       successMsg:
-        "Merci pour votre commande. Nous l'avons bien reçue et vous enverrons sous peu une confirmation et un lien de paiement par e-mail.",
+        "Merci pour votre commande. Nous l'avons bien recue et vous enverrons sous peu une confirmation par e-mail.",
       orderRef: "Votre référence de commande",
       close: "Fermer",
       errRequired: "Ce champ est requis",
