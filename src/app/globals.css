@@ -1,0 +1,243 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-jetbrains-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Brand tokens exposed to Tailwind utilities (bg-brand-accent etc.) */
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-2: var(--brand-accent-2);
+  --color-brand-accent-soft: var(--brand-accent-soft);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-surface-alt: var(--brand-surface-alt);
+  --color-brand-surface-alt-2: var(--brand-surface-alt-2);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-muted: var(--brand-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * Base theme — values are injected at runtime by <ThemeStyles/> from
+ * src/config/brand.ts. The defaults below keep things sensible if the
+ * injector hasn't run yet (e.g. during SSR before hydration).
+ * ------------------------------------------------------------------------- */
+:root {
+  --radius: 0.85rem;
+  --brand-accent: #ff6a1a;
+  --brand-accent-2: #ffb347;
+  --brand-accent-soft: #ff8c3a;
+  --brand-surface: #0a0a0b;
+  --brand-surface-alt: #121214;
+  --brand-surface-alt-2: #1a1a1e;
+  --brand-ink: #f5f5f4;
+  --brand-muted: #a1a1aa;
+  --brand-border: rgba(255, 255, 255, 0.08);
+
+  --background: var(--brand-surface);
+  --foreground: var(--brand-ink);
+  --card: var(--brand-surface-alt);
+  --card-foreground: var(--brand-ink);
+  --popover: var(--brand-surface-alt-2);
+  --popover-foreground: var(--brand-ink);
+  --primary: var(--brand-accent);
+  --primary-foreground: #0a0a0b;
+  --secondary: var(--brand-surface-alt-2);
+  --secondary-foreground: var(--brand-ink);
+  --muted: var(--brand-surface-alt);
+  --muted-foreground: var(--brand-muted);
+  --accent: var(--brand-surface-alt-2);
+  --accent-foreground: var(--brand-ink);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--brand-border);
+  --input: var(--brand-border);
+  --ring: var(--brand-accent);
+  --chart-1: var(--brand-accent);
+  --chart-2: var(--brand-accent-2);
+  --chart-3: #f5f5f4;
+  --chart-4: #71717a;
+  --chart-5: #3f3f46;
+  --sidebar: var(--brand-surface-alt);
+  --sidebar-foreground: var(--brand-ink);
+  --sidebar-primary: var(--brand-accent);
+  --sidebar-primary-foreground: #0a0a0b;
+  --sidebar-accent: var(--brand-surface-alt-2);
+  --sidebar-accent-foreground: var(--brand-ink);
+  --sidebar-border: var(--brand-border);
+  --sidebar-ring: var(--brand-accent);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: var(--brand-accent);
+    color: #0a0a0b;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ *  CUSTOM UTILITIES & ANIMATIONS
+ * ------------------------------------------------------------------------- */
+
+/* Gradient text — accent → amber */
+.text-gradient {
+  background: linear-gradient(100deg, var(--brand-accent) 0%, var(--brand-accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Subtle accent glow used behind hero/badges */
+.accent-glow {
+  background: radial-gradient(closest-side, var(--brand-accent), transparent);
+  filter: blur(60px);
+  opacity: 0.45;
+}
+
+/* Glass panel */
+.glass {
+  background: color-mix(in oklab, var(--brand-surface-alt) 70%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--brand-border);
+}
+
+/* Thin gradient hairline */
+.hairline {
+  background: linear-gradient(90deg, transparent, var(--brand-border) 20%, var(--brand-border) 80%, transparent);
+}
+
+/* Grid texture background */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--brand-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--brand-border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* Slow float */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(2deg); }
+}
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+/* Rotating conic glow */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
+
+/* Animated gradient blob */
+@keyframes blob {
+  0%, 100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; transform: translate(0,0) scale(1); }
+  33% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(20px,-18px) scale(1.05); }
+  66% { border-radius: 35% 65% 55% 45% / 40% 60% 40% 60%; transform: translate(-16px,14px) scale(0.97); }
+}
+.animate-blob {
+  animation: blob 14s ease-in-out infinite;
+}
+
+/* Layer-by-layer print rise (used for hero decorative layers) */
+@keyframes print-rise {
+  0% { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Custom scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-surface-alt-2) transparent;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--brand-surface-alt-2);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--brand-accent); background-clip: padding-box; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
