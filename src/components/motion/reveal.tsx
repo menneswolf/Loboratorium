@@ -7,8 +7,8 @@
  *  scroll-triggered animations. All respect prefers-reduced-motion.
  * ========================================================================== */
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
+import { motion, useReducedMotion, useInView, type Variants } from "framer-motion";
+import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /* ---- Reveal: fades + slides content into view on scroll ------------------ */
@@ -26,13 +26,20 @@ export function Reveal({
   as?: "div" | "section" | "li" | "span";
 }) {
   const reduce = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  // useInView observes on mount, so it reliably fires for content that is
+  // already in the viewport on first paint (the whileInView prop did not).
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
   const MotionTag = motion[as];
+  const shownState = reduce ? { opacity: 1 } : { opacity: 1, y: 0 };
   return (
     <MotionTag
+      // motion[as] is a union component; the shared HTMLElement ref is fine at
+      // runtime but doesn't line up with the intersected ref type.
+      ref={ref as never}
       className={className}
       initial={reduce ? { opacity: 0 } : { opacity: 0, y }}
-      whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
+      animate={inView ? shownState : undefined}
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
@@ -65,13 +72,15 @@ export function StaggerGroup({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
   return (
     <motion.div
+      ref={ref}
       className={className}
       variants={staggerContainer}
       initial={reduce ? "show" : "hidden"}
-      whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
+      animate={reduce || inView ? "show" : "hidden"}
     >
       {children}
     </motion.div>
