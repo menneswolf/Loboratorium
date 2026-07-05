@@ -54,7 +54,24 @@ For `NEXTAUTH_SECRET`, generate a random value:
 openssl rand -base64 32
 ```
 
-## 3. Push The Database Schema
+## 3. Switch The Datasource To Postgres
+
+The repo ships configured for **SQLite** so it runs locally with no external
+database. Before deploying, edit `prisma/schema.prisma` and change the
+`datasource` block to Postgres:
+
+```prisma
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+```
+
+(To keep developing locally on SQLite afterwards, just don't commit that
+change — or use a separate Neon dev database so local matches production.)
+
+## 4. Push The Database Schema
 
 After setting `DATABASE_URL` and `DATABASE_URL_UNPOOLED`, run this locally or from a deployment shell:
 
@@ -66,7 +83,7 @@ npm run db:seed
 
 Use `db:push` for the first simple launch. Later, when schema changes become more formal, use migrations.
 
-## 4. Deploy To Vercel
+## 5. Deploy To Vercel
 
 Push the project to GitHub, then:
 
@@ -81,7 +98,7 @@ Push the project to GitHub, then:
 
 The build script runs `prisma generate && next build`.
 
-## 5. Configure Mollie
+## 6. Configure Mollie
 
 In Mollie:
 
@@ -96,7 +113,7 @@ https://yourdomain.com/api/webhooks/mollie
 4. Confirm the order updates in the admin dashboard.
 5. Switch to the live key only when the full flow works.
 
-## 6. Configure Sendcloud
+## 7. Configure Sendcloud
 
 In Sendcloud:
 
@@ -106,7 +123,7 @@ In Sendcloud:
 4. Fill all sender address variables.
 5. Place a paid test order and confirm a parcel is created.
 
-## 7. Add A Domain
+## 8. Add A Domain
 
 In Vercel:
 
@@ -124,7 +141,7 @@ Then redeploy.
 
 ## Notes
 
-- SQLite is not suitable for hosted ecommerce orders; this project is configured for Postgres.
+- The repo defaults to SQLite so it runs locally out of the box. SQLite is **not** suitable for hosted ecommerce orders — switch the datasource to Postgres before deploying (see step 3).
 - The current upload API writes to local disk. On Vercel, local files are not persistent. Use Supabase Storage, Cloudflare R2, or S3 before relying on uploads in production.
 - Test with Mollie test keys before using live keys.
 - Keep all Mollie and Sendcloud secrets in hosting environment variables, never in frontend code.
