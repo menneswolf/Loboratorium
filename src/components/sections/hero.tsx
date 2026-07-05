@@ -119,10 +119,10 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.24 }}
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
-            <Button asChild size="lg" className="group h-12 px-6 text-base">
+            <Button asChild size="lg" className="sheen group h-12 px-6 text-base">
               <Link href={h.primaryCta.href}>
                 {h.primaryCta.label}
-                <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="relative z-[2] transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
             <Button

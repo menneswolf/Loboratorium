@@ -148,12 +148,101 @@
   opacity: 0.45;
 }
 
-/* Glass panel */
+/* Premium easing — expo-out curve for fluid "liquid glass" motion */
+:root {
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glass panel — frosted surface with a soft top highlight for depth */
 .glass {
+  position: relative;
   background: color-mix(in oklab, var(--brand-surface-alt) 70%, transparent);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   border: 1px solid var(--brand-border);
+}
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--brand-ink) 14%, transparent),
+    transparent 45%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Premium card — layered surface, hairline top highlight, lifts + glows on hover */
+.card-premium {
+  position: relative;
+  border: 1px solid var(--brand-border);
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--brand-ink) 4%, transparent), transparent 22%),
+    var(--card);
+  transition:
+    transform 0.4s var(--ease-premium),
+    border-color 0.4s var(--ease-premium),
+    box-shadow 0.4s var(--ease-premium);
+}
+.card-premium:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--brand-accent) 45%, var(--brand-border));
+  box-shadow:
+    0 24px 60px -28px rgba(0, 0, 0, 0.85),
+    0 0 0 1px color-mix(in oklab, var(--brand-accent) 18%, transparent),
+    0 12px 40px -20px color-mix(in oklab, var(--brand-accent) 40%, transparent);
+}
+
+/* Light-sweep sheen — a diagonal highlight that glides across on hover */
+.sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    color-mix(in oklab, var(--brand-ink) 16%, transparent) 48%,
+    transparent 66%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease-premium);
+}
+.sheen:hover::after {
+  transform: translateX(120%);
+}
+
+/* Animated iridescent gradient text — subtle flowing accent on headings */
+.text-gradient-flow {
+  background: linear-gradient(
+    100deg,
+    var(--brand-accent) 0%,
+    var(--brand-accent-2) 35%,
+    var(--brand-accent) 70%,
+    var(--brand-accent-2) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradient-flow 8s ease-in-out infinite;
+}
+@keyframes gradient-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 /* Thin gradient hairline */

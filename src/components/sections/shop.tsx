@@ -12,7 +12,6 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Plus, Check, ArrowRight } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import {
@@ -125,13 +124,10 @@ function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <motion.article
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 22 }}
-    >
+    <article className="h-full">
       <Link
         href={`/shop/${product.slug}`}
-        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-brand-accent/40"
+        className="card-premium sheen group flex h-full flex-col overflow-hidden rounded-2xl"
       >
         <div className="relative aspect-square overflow-hidden">
           <Image
@@ -139,17 +135,19 @@ function ProductCard({ product }: { product: Product }) {
             alt={product.name[locale]}
             fill
             sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 22vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
           />
+          {/* Depth gradient — grounds the image and separates it from the body */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-70" />
           {product.badge ? (
-            <span className="absolute left-2 top-2 rounded-full bg-brand-accent px-2 py-0.5 font-heading text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
+            <span className="absolute left-2.5 top-2.5 rounded-full border border-white/10 bg-brand-accent/90 px-2.5 py-0.5 font-heading text-[10px] font-bold uppercase tracking-wide text-primary-foreground shadow-lg backdrop-blur-sm">
               {s.badges[product.badge]}
             </span>
           ) : null}
         </div>
 
-        <div className="flex flex-1 flex-col p-3 sm:p-4">
-          <h3 className="font-heading text-sm font-semibold leading-tight text-foreground sm:text-base">
+        <div className="relative z-[2] flex flex-1 flex-col p-3 sm:p-4">
+          <h3 className="font-heading text-sm font-semibold leading-tight text-foreground transition-colors group-hover:text-brand-accent sm:text-base">
             {product.name[locale]}
           </h3>
           <p className="mt-1 line-clamp-2 text-xs text-muted-foreground sm:text-sm">
@@ -157,20 +155,20 @@ function ProductCard({ product }: { product: Product }) {
           </p>
 
           <div className="mt-3 flex items-center justify-between gap-2 pt-1">
-            <span className="font-heading text-base font-bold text-foreground sm:text-lg">
+            <span className="font-heading text-base font-bold tabular-nums text-foreground sm:text-lg">
               {localizedPrice(product.price, locale)}
             </span>
             <Button
               size="icon"
               onClick={handleAdd}
               aria-label={s.addToCart}
-              className="size-8 shrink-0 sm:size-9"
+              className="size-8 shrink-0 transition-transform group-hover:scale-105 sm:size-9"
             >
               {added ? <Check className="size-4" /> : <Plus className="size-4" />}
             </Button>
           </div>
         </div>
       </Link>
-    </motion.article>
+    </article>
   );
 }

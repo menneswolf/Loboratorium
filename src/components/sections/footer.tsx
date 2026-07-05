@@ -48,12 +48,12 @@ export function Footer() {
             <h3 className="font-heading text-sm font-semibold text-foreground">
               {t.footer.explore}
             </h3>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-4 space-y-1">
               {t.nav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="inline-block py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {item.label}
                   </Link>
@@ -67,14 +67,14 @@ export function Footer() {
             <h3 className="font-heading text-sm font-semibold text-foreground">
               {t.footer.services}
             </h3>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-4 space-y-1">
               {t.customOrders.items
                 .slice(0, 5)
                 .map((item) => (
                   <li key={item.title}>
                     <Link
                       href="/custom-orders"
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      className="inline-block py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {item.title}
                     </Link>
@@ -113,16 +113,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
           <p>
             © {year} {brand.name}. {t.footer.rights}
           </p>
-          <p>
-            {t.footer.crafted} ·{" "}
-            <span className="text-muted-foreground/70">
-              {t.footer.revamp} <code className="text-foreground/80">src/config/brand.ts</code>
-            </span>
-          </p>
+          <p className="text-muted-foreground/70">{t.footer.crafted}</p>
         </div>
       </div>
     </footer>

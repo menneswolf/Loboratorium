@@ -64,7 +64,9 @@ export default function ProductPage({
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Image / 3D model */}
             <Reveal>
-              <div className="relative aspect-square overflow-hidden rounded-3xl border border-border bg-card">
+              <div className="group relative aspect-square overflow-hidden rounded-3xl border border-border bg-card shadow-[0_40px_100px_-40px_rgba(0,0,0,0.9)]">
+                {/* Ambient accent glow behind the product */}
+                <div className="accent-glow pointer-events-none absolute left-1/2 top-1/2 -z-0 h-2/3 w-2/3 -translate-x-1/2 -translate-y-1/2 opacity-30" />
                 {product.modelUrl ? (
                   <ModelViewer src={product.modelUrl} />
                 ) : (
@@ -73,7 +75,7 @@ export default function ProductPage({
                     alt={product.name[locale]}
                     fill
                     sizes="(max-width: 1024px) 90vw, 45vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                     priority
                   />
                 )}
@@ -188,7 +190,7 @@ export default function ProductPage({
                 <StaggerItem key={p.id}>
                   <Link
                     href={`/shop/${p.slug}`}
-                    className="group block overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-brand-accent/40"
+                    className="card-premium sheen group block overflow-hidden rounded-2xl"
                   >
                     <div className="relative aspect-square overflow-hidden">
                       <Image
@@ -196,14 +198,15 @@ export default function ProductPage({
                         alt={p.name[locale]}
                         fill
                         sizes="(max-width: 640px) 45vw, 22vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
                       />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-70" />
                     </div>
-                    <div className="p-3">
-                      <h3 className="font-heading text-sm font-semibold text-foreground">
+                    <div className="relative z-[2] p-3">
+                      <h3 className="font-heading text-sm font-semibold text-foreground transition-colors group-hover:text-brand-accent">
                         {p.name[locale]}
                       </h3>
-                      <p className="mt-1 font-heading text-sm font-bold text-foreground">
+                      <p className="mt-1 font-heading text-sm font-bold tabular-nums text-foreground">
                         {localizedPrice(p.price, locale)}
                       </p>
                     </div>

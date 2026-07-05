@@ -26,7 +26,7 @@ export const seedProducts = [
     },
     description: {
       en: "A faceted planter that snaps together in modules — build a wall, a stack, or a standalone piece. Drainage plug included.",
-      nl: "Een gehoekte plantenpot die modular in elkaar klikt — bouw een muur, een stapel of een los stuk. Incl. afvoerplug.",
+      nl: "Een gefacetteerde plantenpot die je modulair in elkaar klikt — bouw een wand, een stapel of een los exemplaar. Inclusief afvoerplug.",
       fr: "Un cache-pot à facettes qui s'emboîte en modules — mur, pile ou pièce isolée. Bouchon de drainage inclus.",
     },
   },

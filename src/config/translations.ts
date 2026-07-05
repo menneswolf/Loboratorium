@@ -600,7 +600,7 @@ const nl: Content = {
     { label: "FAQ", href: "/faq" },
   ],
   hero: {
-    eyebrow: "3D-printen op maat · Made in Belgium",
+    eyebrow: "3D-printen op maat · Gemaakt in België",
     title: { lead: "Wij maken van ideeën", accent: "tastbare dingen." },
     subtitle:
       "Loboratorium is een 3D-printstudio op maat voor makers, merken en bedrijven. Van een uniek prototype tot een merkgebonden productielijn — wij printen, afwerken en verzenden het.",
@@ -671,15 +671,15 @@ const nl: Content = {
   },
   customOrders: {
     eyebrow: "Op maat",
-    title: { lead: "Breng je wildste", accent: "stuk." },
+    title: { lead: "Kom maar met je", accent: "gekste idee." },
     subtitle:
-      "Stuur een schets, een CAD-bestand of gewoon een idee. Wij verzorgen het ontwerp voor additive manufacturing, de materiaalkeuze, het printen en de nabewerking — zodat je een stuk krijgt dat echt werkt.",
+      "Stuur een schets, een CAD-bestand of gewoon een idee. Wij nemen het ontwerp, de materiaalkeuze, het printen en de afwerking op ons — zodat je een stuk krijgt dat écht werkt.",
     items: [
       { icon: "boxes", title: "Prototypes & R&D", text: "Itereer snel met functionele prototypes die eruitzien en aanvoelen als het echte werk. Perfect voor productontwikkeling en investeerdersdemo's." },
       { icon: "wrench", title: "Vervang- & reserveonderdelen", text: "Moeilijk vindbare of uit productie genomen onderdelen, gereconstrueerd op basis van monsters of tekeningen, geprint in duurzame technische materialen." },
       { icon: "gift", title: "Gepersonaliseerd & uniek", text: "Op maat gemaakte geschenken, signalisatie, displays en unieke stukken, exact afgestemd op jouw wensen en merk." },
       { icon: "factory", title: "Kleine series", text: "Sla de mal over. Produceer 10–500 stuks economisch, met consistente kwaliteit en herhaalbare resultaten." },
-      { icon: "pen-tool", title: "Ontwerp voor print", text: "Geen CAD? Geen probleem. Onze ontwerpers optimaliseren of modelleren jouw stuk from scratch voor cleane, betrouwbare prints." },
+      { icon: "pen-tool", title: "Ontwerp voor print", text: "Geen CAD? Geen probleem. Onze ontwerpers optimaliseren je model of tekenen het van nul, voor propere en betrouwbare prints." },
       { icon: "sparkles", title: "Afwerking & assemblage", text: "Schuren, schilderen, vapor smoothing, draadinserts en assemblage — jouw stuk komt gebruiksklaar aan." },
     ],
     cta: { label: "Start een op-maat-bestelling", href: "/quote" },
@@ -688,17 +688,17 @@ const nl: Content = {
     eyebrow: "Voor merken",
     title: { lead: "Deals die", accent: "meeschalen", tail: "met jouw merk." },
     subtitle:
-      "Wij werken samen met merken, agentschappen en retailers om merch, verpakkingen, displays en gelicentieerde producten te maken. White-label productie, volumeprijzen en toegewijde support — afgestemd op jouw roadmap.",
+      "Wij werken samen met merken, bureaus en retailers voor merchandise, verpakkingen, displays en producten onder licentie. White-label productie, volumekortingen en persoonlijke begeleiding — afgestemd op jouw planning.",
     benefits: [
       { icon: "handshake", title: "White-label productie", text: "Wij printen het, jij brengt het onder je merk. Neutrale verpakking en drop-shipping direct naar jouw magazijn of klanten." },
       { icon: "tag", title: "Volume- & groothandelprijzen", text: "Gelaagde prijzen die schalen belonen. Hoe meer je bestelt, hoe minder je per stuk betaalt — voorspelbare marges voor jou." },
-      { icon: "shield-check", title: "Exclusiviteit & licenties", text: "Exclusieve productielijnen en gelicentieerde collabs, met duidelijke IP-voorwaarden en NDA's op verzoek." },
-      { icon: "headset", title: "Eigen accountmanager", text: "Eén aanspreekpunt dat jouw producten, timing en kwaliteitsnorm kent." },
+      { icon: "shield-check", title: "Exclusiviteit & licenties", text: "Exclusieve productieruns en samenwerkingen onder licentie, met duidelijke IP-afspraken en NDA's op verzoek." },
+      { icon: "headset", title: "Eigen accountmanager", text: "Eén vast aanspreekpunt dat jouw producten, timing en kwaliteitseisen kent." },
     ],
     steps: [
       { n: "01", title: "Kennismaking", text: "We leren jouw merk, volumes en timing kennen." },
       { n: "02", title: "Sample & offerte", text: "We sturen samples en fixeren de prijzen." },
-      { n: "03", title: "Productie", text: "We produceren, werken af en QC'en elk stuk." },
+      { n: "03", title: "Productie", text: "We produceren, werken af en controleren elk stuk op kwaliteit." },
       { n: "04", title: "Levering", text: "Gemerkt, verpakt en verzonden volgens afspraak." },
     ],
     cta: { label: "Word partner", href: "/quote" },
@@ -799,7 +799,7 @@ const nl: Content = {
       { q: "Hoe snel kunnen jullie leveren?", a: "De meeste losse bestellingen worden binnen 2–4 werkdagen verzonden. Series en merkorders hangen af van het volume — je krijgt een realistische levertijd in je offerte." },
       { q: "Leveren jullie internationaal?", a: "Ja. We zitten in België en verzenden wereldwijd met tracking. Afhalen is ook mogelijk op afspraak." },
       { q: "Kunnen jullie een NDA tekenen voor merkwerk?", a: "Zeker. We werken routinematig onder NDA voor merken en agentschappen, en kunnen exclusieve productielijnen aanbieden waar gewenst." },
-      { q: "Kunnen jullie mijn merkkleuren matchen?", a: "Ja — we hebben een brede filamentskleuren op voorraad en kunnen specifieke Pantone-geklleurde materialen sourced voor merk- en merchandisingwerk." },
+      { q: "Kunnen jullie mijn merkkleuren matchen?", a: "Ja — we hebben een breed gamma filamentkleuren op voorraad en kunnen specifieke Pantone-kleuren voor je bestellen voor merk- en merchandisingwerk." },
     ],
   },
   ctaBand: {
@@ -838,7 +838,7 @@ const nl: Content = {
       },
       brands: {
         title: "Voor merken",
-        text: "White-label productie, groothandelprijzen en gelicentieerde collabs — afgestemd op de roadmap van jouw merk.",
+        text: "White-label productie, groothandelprijzen en samenwerkingen onder licentie — afgestemd op de planning van jouw merk.",
         cta: { label: "Word onze partner", href: "/brands" },
       },
     },
@@ -853,13 +853,13 @@ const nl: Content = {
 
   about: {
     eyebrow: "Over ons",
-    title: { lead: "Een Belgische studio geobsedeerd door", accent: "dingen echt maken." },
+    title: { lead: "Een Belgische studio met een obsessie voor", accent: "dingen écht maken." },
     intro:
-      "Loboratorium is een 3D-printstudio op maat, gevestigd in België. We helpen makers, merken en bedrijven ideeën om te zetten in fysieke objecten — van één prototype tot een productielijn.",
+      "Loboratorium is een 3D-printstudio op maat, gevestigd in België. We helpen makers, merken en bedrijven om ideeën om te zetten in tastbare objecten — van één prototype tot een volledige productielijn.",
     story: [
       "Wat begon als een garageproject groeide snel uit tot een volledige studio. We investeerden in meerdere printtechnologieën, een muur vol materialen en een nabewerkingsbank — want een goede print is niet af als de printer stopt.",
       "Vandaag werken we met iedereen, van hobbyisten met een schets tot internationale merken die duizenden stuks nodig hebben. De rode draad: we behandelen elk stuk alsof we het zelf zouden gebruiken.",
-      "We geloven dat additive manufacturing toegankelijk, snel en écht nuttig hoort te zijn. Geen jargon, geen opgeblazen offertes — gewoon goed gemaakte stukken, op tijd geleverd.",
+      "We geloven dat additieve productie toegankelijk, snel en écht nuttig hoort te zijn. Geen jargon, geen opgeblazen offertes — gewoon goed gemaakte stukken, op tijd geleverd.",
     ],
     values: [
       { icon: "sparkles", title: "Kwaliteit voorop", text: "Elk stuk wordt geïnspecteerd en met de hand afgewerkt voordat het de studio verlaat." },
@@ -928,9 +928,9 @@ const fr: Content = {
   ],
   shop: {
     eyebrow: "Boutique",
-    title: { lead: "Des pièces prêtes,", accent: "prêtes à expédier." },
+    title: { lead: "Des pièces toutes faites,", accent: "prêtes à expédier." },
     subtitle:
-      "Parcourez notre catalogue de produits imprimés en 3D prêts à l'emploi. Ajoutez au panier, commandez, et nous imprimons et expédions sous quelques jours. Vous cherchez du sur mesure ? Continuez plus bas.",
+      "Parcourez notre catalogue de produits imprimés en 3D prêts à l'emploi. Ajoutez au panier, commandez, et nous imprimons et expédions sous quelques jours. Envie de sur-mesure ? Continuez plus bas.",
     addToCart: "Ajouter au panier",
     added: "Ajouté",
     viewDetails: "Voir les détails",
@@ -980,15 +980,15 @@ const fr: Content = {
   },
   customOrders: {
     eyebrow: "Sur mesure",
-    title: { lead: "Apportez-nous votre pièce la", accent: "plus folle." },
+    title: { lead: "Lancez-nous votre", accent: "défi le plus fou." },
     subtitle:
       "Envoyez un croquis, un fichier CAO ou juste une idée. Nous gérons la conception pour fabrication additive, le choix des matériaux, l'impression et la post-finition — pour une pièce qui fonctionne vraiment.",
     items: [
       { icon: "boxes", title: "Prototypes & R&D", text: "Itérez rapidement avec des prototypes fonctionnels qui ressemblent au produit final. Parfait pour le développement produit et les démos investisseurs." },
       { icon: "wrench", title: "Pièces de remplacement", text: "Pièces introuvables ou abandonnées, recréées à partir d'échantillons ou de plans, imprimées dans des matériaux techniques durables." },
-      { icon: "gift", title: "Personnalisé & sur mesure", text: "Cadeaux, signalétique, displays et pièces uniques adaptés exactement à vos besoins et à votre marque." },
+      { icon: "gift", title: "Personnalisé & sur mesure", text: "Cadeaux, signalétique, présentoirs et pièces uniques adaptés exactement à vos besoins et à votre marque." },
       { icon: "factory", title: "Petite série", text: "Passez le moule. Produisez 10–500 unités économiquement, avec une qualité constante et des résultats reproductibles." },
-      { icon: "pen-tool", title: "Conception pour impression", text: "Pas de CAO ? Aucun souci. Nos designers optimisent ou modélisent votre pièce from scratch pour des impressions propres et fiables." },
+      { icon: "pen-tool", title: "Conception pour impression", text: "Pas de CAO ? Aucun souci. Nos designers optimisent votre modèle ou le créent de zéro, pour des impressions nettes et fiables." },
       { icon: "sparkles", title: "Finition & assemblage", text: "Ponçage, peinture, lissage vapeur, inserts filetés et assemblage — votre pièce arrive prête à l'emploi." },
     ],
     cta: { label: "Démarrer une commande sur mesure", href: "/quote" },
@@ -997,9 +997,9 @@ const fr: Content = {
     eyebrow: "Pour marques",
     title: { lead: "Des accords qui", accent: "passent à l'échelle", tail: "avec votre marque." },
     subtitle:
-      "Nous partenariats avec marques, agences et détaillants pour produire merch, emballages, displays et produits sous licence. Fabrication white-label, tarifs volume et support dédié — calés sur votre roadmap.",
+      "Nous nous associons à des marques, agences et détaillants pour produire produits dérivés, emballages, présentoirs et articles sous licence. Fabrication en marque blanche, tarifs dégressifs et accompagnement dédié — calés sur votre feuille de route.",
     benefits: [
-      { icon: "handshake", title: "Fabrication white-label", text: "Nous imprimons, vous apposez votre marque. Emballage neutre et drop-shipping direct vers votre entrepôt ou vos clients." },
+      { icon: "handshake", title: "Fabrication en marque blanche", text: "Nous imprimons, vous apposez votre marque. Emballage neutre et expédition directe vers votre entrepôt ou vos clients." },
       { icon: "tag", title: "Tarifs volume & gros", text: "Tarification dégressive qui récompense l'échelle. Plus vous commandez, moins vous payez par unité — des marges prévisibles." },
       { icon: "shield-check", title: "Exclusivité & licences", text: "Production exclusive et collaborations sous licence, avec des termes IP clairs et NDA sur demande." },
       { icon: "headset", title: "Gestionnaire de compte dédié", text: "Un point de contact unique qui connaît vos produits, vos délais et votre niveau d'exigence." },
@@ -1027,7 +1027,7 @@ const fr: Content = {
     ],
     materialsTitle: "Matériaux que nous imprimons",
     materialsSubtitle:
-      "40+ filaments & résines en stock — vous ne trouvez pas le vôtre ? Nous le sourçons.",
+      "Plus de 40 filaments et résines en stock — vous ne trouvez pas le vôtre ? Nous le trouvons pour vous.",
     materials: [
       "PLA", "PETG", "ABS", "ASA", "Nylon (PA12)", "Nylon fibre de carbone",
       "TPU (Flexible)", "Résine (Standard)", "Résine (Tough)", "Résine (Dentaire)",
@@ -1038,9 +1038,9 @@ const fr: Content = {
     eyebrow: "Réalisations",
     title: { lead: "Un aperçu de", accent: "ce que nous faisons." },
     subtitle:
-      "Du merch de marque aux prototypes techniques — chaque projet est sur mesure, chaque pièce finie à la main.",
+      "Des produits dérivés de marque aux prototypes techniques — chaque projet est sur mesure, chaque pièce finie à la main.",
     items: [
-      { title: "Displays de marque", category: "Pour marques", image: "/images/gallery-2.png" },
+      { title: "Présentoirs de marque", category: "Pour marques", image: "/images/gallery-2.png" },
       { title: "Prototype fonctionnel", category: "Sur mesure", image: "/images/gallery-1.png" },
       { title: "Série de production", category: "Petite série", image: "/images/gallery-3.png" },
       { title: "Produit portable", category: "Sur mesure", image: "/images/gallery-4.png" },
@@ -1142,12 +1142,12 @@ const fr: Content = {
         "Que vous ayez besoin d'une pièce unique ou d'une production de marque, nous avons un parcours pour vous.",
       custom: {
         title: "Sur mesure",
-        text: "Prototypes uniques, pièces de remplacement, cadeaux personnalisés et petites séries — conçus, imprimés et finis selon vos specs.",
+        text: "Prototypes uniques, pièces de remplacement, cadeaux personnalisés et petites séries — conçus, imprimés et finis selon vos besoins.",
         cta: { label: "Découvrir le sur mesure", href: "/custom-orders" },
       },
       brands: {
         title: "Pour marques",
-        text: "Fabrication white-label, tarifs de gros et collaborations sous licence — calés sur la roadmap de votre marque.",
+        text: "Fabrication en marque blanche, tarifs de gros et collaborations sous licence — calés sur la feuille de route de votre marque.",
         cta: { label: "Devenir partenaire", href: "/brands" },
       },
     },
@@ -1167,14 +1167,14 @@ const fr: Content = {
       "Loboratorium est un studio d'impression 3D sur mesure basé en Belgique. Nous aidons créateurs, marques et entreprises à transformer des idées en objets physiques — du prototype unique à la production en série.",
     story: [
       "Ce qui a commencé comme un projet de garage s'est rapidement transformé en un studio complet. Nous avons investi dans plusieurs technologies d'impression, un mur de matériaux et un banc de post-finition — car une bonne impression n'est pas finie quand l'imprimante s'arrête.",
-      "Aujourd'hui, nous travaillons avec tout le monde, des hobbyistes avec un croquis aux marques internationales needing des milliers d'unités. Le fil conducteur : nous traitons chaque pièce comme si nous allions l'utiliser nous-mêmes.",
+      "Aujourd'hui, nous travaillons avec tout le monde : de l'amateur avec un simple croquis aux marques internationales qui commandent des milliers d'unités. Le fil conducteur : nous traitons chaque pièce comme si nous allions l'utiliser nous-mêmes.",
       "Nous croyons que la fabrication additive doit être accessible, rapide et vraiment utile. Pas de jargon, pas de devis gonflés — juste des pièces bien faites, livrées à temps.",
     ],
     values: [
       { icon: "sparkles", title: "La qualité d'abord", text: "Chaque pièce est inspectée et finie à la main avant de quitter le studio." },
       { icon: "clock", title: "Livraison rapide", text: "La plupart des commandes sont expédiées en jours, pas en semaines. Devis sous 24h." },
-      { icon: "shield-check", title: "Honnête & confidentiel", text: "Tarification transparente et NDA pour les projets de marque. Votre IP reste vôtre." },
-      { icon: "boxes", title: "Matériaux pour chaque job", text: "40+ filaments et résines en stock — et nous sourçons tout le reste." },
+      { icon: "shield-check", title: "Honnête & confidentiel", text: "Tarification transparente et accords de confidentialité pour les projets de marque. Votre propriété intellectuelle reste la vôtre." },
+      { icon: "boxes", title: "Un matériau pour chaque projet", text: "Plus de 40 filaments et résines en stock — et nous trouvons tout le reste." },
     ],
     cta: { label: "Démarrer un projet", href: "/quote" },
   },

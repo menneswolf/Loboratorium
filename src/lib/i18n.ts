@@ -23,19 +23,25 @@ export { locales, localeNames, localeFlags } from "@/config/translations";
 
 type I18nState = {
   locale: Locale;
+  /** True once the user (or auto-detection) has explicitly chosen a language. */
+  chosen: boolean;
   setLocale: (l: Locale) => void;
+  /** Set the auto-detected locale on first visit (marks `chosen`). */
+  autoSetLocale: (l: Locale) => void;
 };
 
 export const useI18n = create<I18nState>()(
   persist(
     (set) => ({
       locale: "en",
-      setLocale: (locale) => set({ locale }),
+      chosen: false,
+      setLocale: (locale) => set({ locale, chosen: true }),
+      autoSetLocale: (locale) => set({ locale, chosen: true }),
     }),
     {
       name: "lobo-locale",
-      // Only persist the locale, not methods
-      partialize: (s) => ({ locale: s.locale }) as I18nState,
+      // Persist the locale + whether a language was ever chosen
+      partialize: (s) => ({ locale: s.locale, chosen: s.chosen }) as I18nState,
     }
   )
 );
