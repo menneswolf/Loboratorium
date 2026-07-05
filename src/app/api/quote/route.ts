@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 
 const quoteSchema = z.object({
   name: z.string().min(2, "Please enter your name").max(100),
@@ -19,6 +20,9 @@ const quoteSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const limited = rateLimit(req, "quote");
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await req.json();

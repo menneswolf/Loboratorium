@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { products } from "@/config/products";
+import { getAllProducts } from "@/lib/products";
+import { rateLimit } from "@/lib/rate-limit";
 
 const orderSchema = z.object({
   name: z.string().min(2).max(120),
@@ -29,6 +30,9 @@ function makeRef(): string {
 }
 
 export async function POST(req: Request) {
+  const limited = rateLimit(req, "orders");
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await req.json();
@@ -47,6 +51,7 @@ export async function POST(req: Request) {
 
   // Resolve items against the server-side catalogue to compute the real total.
   // (Never trust prices sent from the client.)
+  const products = await getAllProducts();
   const lineItems: { productId: string; name: string; price: number; qty: number }[] = [];
   let total = 0;
   for (const item of parsed.data.items) {

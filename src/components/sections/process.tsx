@@ -22,15 +22,7 @@ export function Process({ hideHeading = false }: { hideHeading?: boolean } = {})
       </div>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {!hideHeading ? (
-          <SectionHeading
-            eyebrow={p.eyebrow}
-            title={
-              <>
-                From idea in your head to{" "}
-                <span className="text-gradient">part in your hand.</span>
-              </>
-            }
-          />
+          <SectionHeading eyebrow={p.eyebrow} title={p.title} />
         ) : null}
 
         <div className="relative mt-12">

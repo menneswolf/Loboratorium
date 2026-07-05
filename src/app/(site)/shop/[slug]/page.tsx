@@ -15,11 +15,13 @@ import { notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import { Minus, Plus, ShoppingBag, Check, ArrowRight, ArrowLeft } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import { products, localizedPrice } from "@/config/products";
+import { localizedPrice } from "@/config/products";
+import { useProducts, useProductsStore } from "@/lib/products-store";
 import { PageHeader } from "@/components/sections/page-header";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/reveal";
+import { ModelViewer } from "@/components/three/model-viewer";
 
 export default function ProductPage({
   params,
@@ -27,8 +29,9 @@ export default function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const products = useProducts();
+  const loaded = useProductsStore((s) => s.loaded);
   const product = products.find((p) => p.slug === slug);
-  if (!product) notFound();
 
   const { t, locale } = useT();
   const s = t.shop;
@@ -36,6 +39,9 @@ export default function ProductPage({
   const openDrawer = useCart((st) => st.openDrawer);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+
+  if (loaded && !product) notFound();
+  if (!product) return null;
 
   const related = products.filter((p) => p.id !== product.id).slice(0, 4);
 
@@ -56,17 +62,21 @@ export default function ProductPage({
       <section className="relative pb-20 pt-4 sm:pb-28 sm:pt-8">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
-            {/* Image */}
+            {/* Image / 3D model */}
             <Reveal>
               <div className="relative aspect-square overflow-hidden rounded-3xl border border-border bg-card">
-                <Image
-                  src={product.image}
-                  alt={product.name[locale]}
-                  fill
-                  sizes="(max-width: 1024px) 90vw, 45vw"
-                  className="object-cover"
-                  priority
-                />
+                {product.modelUrl ? (
+                  <ModelViewer src={product.modelUrl} />
+                ) : (
+                  <Image
+                    src={product.image}
+                    alt={product.name[locale]}
+                    fill
+                    sizes="(max-width: 1024px) 90vw, 45vw"
+                    className="object-cover"
+                    priority
+                  />
+                )}
                 {product.badge ? (
                   <span className="absolute left-4 top-4 rounded-full bg-brand-accent px-3 py-1 font-heading text-xs font-bold uppercase tracking-wide text-primary-foreground">
                     {s.badges[product.badge]}

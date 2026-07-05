@@ -34,12 +34,7 @@ export function ForBrands({ hideHeading = false }: { hideHeading?: boolean } = {
         {!hideHeading ? (
           <SectionHeading
             eyebrow={b.eyebrow}
-            title={
-              <>
-                Deals that <span className="text-gradient">scale</span> with your
-                brand.
-              </>
-            }
+            title={b.title}
             subtitle={b.subtitle}
           />
         ) : null}

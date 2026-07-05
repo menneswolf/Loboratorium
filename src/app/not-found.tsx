@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 export default function NotFound() {
   const { t } = useT();
   return (
-    <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden px-4 py-32">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 grid-bg opacity-40" />
         <div className="accent-glow absolute left-1/2 top-1/2 h-60 w-[600px] -translate-x-1/2 -translate-y-1/2" />

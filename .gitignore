@@ -32,9 +32,23 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
+
+# database
+/db/*.db
+/db/*.db-journal
+/prisma/db/*.db
+/prisma/db/*.db-journal
+
+# user-uploaded 3D models
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# original source archive
+/loboratorium-website.zip
 
 
 # typescript

@@ -13,7 +13,8 @@ import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useCart } from "@/lib/cart";
-import { getProduct, localizedPrice } from "@/config/products";
+import { localizedPrice } from "@/config/products";
+import { useProducts } from "@/lib/products-store";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -34,13 +35,14 @@ export function CartDrawer() {
   const remove = useCart((st) => st.remove);
   const clear = useCart((st) => st.clear);
   const openCheckout = useCart((st) => st.openCheckout);
+  const products = useProducts();
 
   const lines = items
     .map((i) => {
-      const product = getProduct(i.productId);
+      const product = products.find((p) => p.id === i.productId);
       return product ? { product, qty: i.qty } : null;
     })
-    .filter((x): x is { product: NonNullable<ReturnType<typeof getProduct>>; qty: number } => x !== null);
+    .filter((x): x is { product: (typeof products)[number]; qty: number } => x !== null);
 
   const subtotal = lines.reduce((sum, l) => sum + l.product.price * l.qty, 0);
   const shipping = subtotal === 0 ? 0 : subtotal >= 150 ? 0 : 6.5;

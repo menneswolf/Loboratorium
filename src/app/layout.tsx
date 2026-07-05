@@ -4,10 +4,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { brand } from "@/config/brand";
 import { allFontVariables } from "@/lib/fonts";
 import { ThemeStyles } from "@/components/brand/theme-styles";
-import { Navbar } from "@/components/sections/navbar";
-import { Footer } from "@/components/sections/footer";
-import { CartDrawer } from "@/components/sections/cart-drawer";
-import { CheckoutDialog } from "@/components/sections/checkout-dialog";
 
 export const metadata: Metadata = {
   title: {
@@ -52,14 +48,7 @@ export default function RootLayout({
         className={`${allFontVariables} antialiased bg-background text-foreground`}
       >
         <ThemeStyles />
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        {/* Global overlays — present on every page */}
-        <CartDrawer />
-        <CheckoutDialog />
+        {children}
         <Toaster />
       </body>
     </html>

@@ -16,11 +16,11 @@ import { motion } from "framer-motion";
 import { Plus, Check, ArrowRight } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import {
-  products,
   localizedPrice,
   type Product,
   type ProductCategory,
 } from "@/config/products";
+import { useProducts } from "@/lib/products-store";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/motion/reveal";
@@ -43,10 +43,11 @@ export function Shop({
   const { t, locale } = useT();
   const s = t.shop;
   const [filter, setFilter] = useState<Filter>("all");
+  const products = useProducts();
 
   const allProducts = useMemo(
     () => (featured ? products.slice(0, featured) : products),
-    [featured]
+    [featured, products]
   );
   const filtered = useMemo(
     () =>

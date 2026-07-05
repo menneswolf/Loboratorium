@@ -48,3 +48,22 @@ model OrderItem {
   price     Float
   qty       Int
 }
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  price       Float
+  category    String
+  image       String
+  badge       String?
+  stock       Int      @default(0)
+  material    Json
+  dimensions  String
+  layerHeight String
+  finishing   Json
+  name        Json
+  description Json
+  modelUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

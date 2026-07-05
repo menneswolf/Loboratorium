@@ -1,12 +1,11 @@
 /* =============================================================================
- *  PRODUCT CATALOGUE
+ *  PRODUCT TYPES
  *  ---------------------------------------------------------------------------
- *  The "normal webshop" inventory. Each product has localised name/description
- *  (English / Dutch / French) so the shop is fully multilingual. Add a product
- *  here and it appears in the shop instantly — no other file to touch.
- *
- *  Prices are in EUR. `category` must be one of the keys in
- *  translations.<locale>.shop.categories (all, decor, desk, kitchen, tech).
+ *  Shared shape for the webshop catalogue. The catalogue itself now lives in
+ *  the database (`Product` model in prisma/schema.prisma) so it can be edited
+ *  from /admin/products — see src/lib/products.ts (server reads) and
+ *  src/lib/products-store.ts (client cache). `prisma/seed-data.ts` holds the
+ *  original launch catalogue used only to seed the DB on first run.
  * ========================================================================== */
 
 import type { Locale } from "@/config/translations";
@@ -23,6 +22,7 @@ export type Product = {
   image: string;
   badge?: ProductBadge;
   stock: number;
+  modelUrl?: string | null;
   specs: {
     material: LocalizedText;
     dimensions: string; // language-neutral (numbers)
@@ -32,210 +32,6 @@ export type Product = {
   name: LocalizedText;
   description: LocalizedText;
 };
-
-export const products: Product[] = [
-  {
-    id: "p1",
-    slug: "modular-planter",
-    price: 24,
-    category: "decor",
-    image: "/images/product-planter.png",
-    badge: "new",
-    stock: 18,
-    specs: {
-      material: { en: "Matte PETG", nl: "Mat PETG", fr: "PETG mat" },
-      dimensions: "120 × 120 × 110 mm",
-      layerHeight: "0.20 mm",
-      finishing: { en: "Sanded, hand-finished", nl: "Geschuurd, handafgewerkt", fr: "Poncé, fini à la main" },
-    },
-    name: {
-      en: "Modular Geometric Planter",
-      nl: "Modulaire geometrische plantenpot",
-      fr: "Cache-pot géométrique modulaire",
-    },
-    description: {
-      en: "A faceted planter that snaps together in modules — build a wall, a stack, or a standalone piece. Drainage plug included.",
-      nl: "Een gehoekte plantenpot die modular in elkaar klikt — bouw een muur, een stapel of een los stuk. Incl. afvoerplug.",
-      fr: "Un cache-pot à facettes qui s'emboîte en modules — mur, pile ou pièce isolée. Bouchon de drainage inclus.",
-    },
-  },
-  {
-    id: "p2",
-    slug: "lattice-vase",
-    price: 32,
-    category: "decor",
-    image: "/images/product-vase.png",
-    badge: "popular",
-    stock: 12,
-    specs: {
-      material: { en: "PLA (silk)", nl: "PLA (zijdeglans)", fr: "PLA (satiné)" },
-      dimensions: "160 × 160 × 240 mm",
-      layerHeight: "0.16 mm",
-      finishing: { en: "Vapor smoothed", nl: "Vapor smoothed", fr: "Lissage vapeur" },
-    },
-    name: {
-      en: "Lattice Vase",
-      nl: "Rasterwerk vaas",
-      fr: "Vase à claire-voie",
-    },
-    description: {
-      en: "An intricate lattice vase that plays beautifully with light. Watertight inner sleeve optional.",
-      nl: "Een ingewikkelde rasterwerkvaas die prachtig met licht speelt. Waterdichte binnenhuls optioneel.",
-      fr: "Un vase à claire-voie complexe qui joue subtilement avec la lumière. Douille intérieure étanche en option.",
-    },
-  },
-  {
-    id: "p3",
-    slug: "phone-desk-stand",
-    price: 18,
-    category: "desk",
-    image: "/images/product-stand.png",
-    stock: 40,
-    specs: {
-      material: { en: "PETG", nl: "PETG", fr: "PETG" },
-      dimensions: "90 × 70 × 80 mm",
-      layerHeight: "0.20 mm",
-      finishing: { en: "Raw, functional", nl: "Ruwe, functionele afwerking", fr: "Finition brute, fonctionnelle" },
-    },
-    name: {
-      en: "Phone & Desk Stand",
-      nl: "Telefoon- & bureaustandaard",
-      fr: "Support téléphone & bureau",
-    },
-    description: {
-      en: "An angled stand that holds your phone upright for calls and videos, with a cable groove built in.",
-      nl: "Een schuine standaard die je telefoon rechtop houdt voor bellen en video's, met ingebouwde kabelgoot.",
-      fr: "Un support incliné qui tient votre téléphone debout pour les appels et vidéos, avec gorge pour câble.",
-    },
-  },
-  {
-    id: "p4",
-    slug: "ribbed-lamp-shade",
-    price: 45,
-    category: "decor",
-    image: "/images/product-lamp.png",
-    badge: "limited",
-    stock: 6,
-    specs: {
-      material: { en: "Heat-resistant PETG", nl: "Hittebestendig PETG", fr: "PETG résistant à la chaleur" },
-      dimensions: "180 × 180 × 160 mm",
-      layerHeight: "0.24 mm",
-      finishing: { en: "Raw translucency", nl: "Ruwe transparantie", fr: "Translucidité brute" },
-    },
-    name: {
-      en: "Ribbed Lamp Shade",
-      nl: "Geribde lampenkap",
-      fr: "Abat-jour nervuré",
-    },
-    description: {
-      en: "A sculptural lamp shade with organic ribs that diffuse the light warmly. Fits standard E27 pendants.",
-      nl: "Een sculpturale lampenkap met organische ribben die het warm diffuseren. Past op standaard E27-hanglampen.",
-      fr: "Un abat-jour sculptural à nervures organiques qui diffuse chaudement la lumière. Pour suspensions E27 standard.",
-    },
-  },
-  {
-    id: "p5",
-    slug: "hex-organizer",
-    price: 28,
-    category: "desk",
-    image: "/images/gallery-1.png",
-    badge: "popular",
-    stock: 22,
-    specs: {
-      material: { en: "PETG", nl: "PETG", fr: "PETG" },
-      dimensions: "150 × 130 × 40 mm",
-      layerHeight: "0.20 mm",
-      finishing: { en: "Sanded edges", nl: "Geschuurde randen", fr: "Bords poncés" },
-    },
-    name: {
-      en: "Hex Desk Organizer",
-      nl: "Hex bureau-organizer",
-      fr: "Organiseur de bureau hexagonal",
-    },
-    description: {
-      en: "Keep pens, cards and clips tidy in a hexagonal tray with built-in compartments.",
-      nl: "Houd pennen, kaarten en paperclips netjes in een zeshoekig blad met ingebouwde vakjes.",
-      fr: "Gardez stylos, cartes et trombones en ordre dans un plateau hexagonal à compartiments.",
-    },
-  },
-  {
-    id: "p6",
-    slug: "cable-clip-set",
-    price: 12,
-    category: "tech",
-    image: "/images/gallery-3.png",
-    stock: 60,
-    specs: {
-      material: { en: "Flexible TPU", nl: "Flexibele TPU", fr: "TPU flexible" },
-      dimensions: "Set of 6 · various sizes",
-      layerHeight: "0.20 mm",
-      finishing: { en: "Flexible, grippy", nl: "Flexibel, antislip", fr: "Flexible, antidérapant" },
-    },
-    name: {
-      en: "Cable Clip Set",
-      nl: "Kabelklem-set",
-      fr: "Set d'attaches-câbles",
-    },
-    description: {
-      en: "A set of six flexible cable clips that stick anywhere and keep your desk chaos-free.",
-      nl: "Een set van zes flexibele kabelklemmen die overal op plakken en je bureau chaosvrij houden.",
-      fr: "Un set de six attaches-câbles flexibles qui se collent partout et gardent un bureau ordonné.",
-    },
-  },
-  {
-    id: "p7",
-    slug: "geometric-wall-sign",
-    price: 38,
-    category: "decor",
-    image: "/images/gallery-2.png",
-    badge: "new",
-    stock: 9,
-    specs: {
-      material: { en: "PLA", nl: "PLA", fr: "PLA" },
-      dimensions: "200 × 200 × 25 mm",
-      layerHeight: "0.16 mm",
-      finishing: { en: "Hand-painted accent", nl: "Handgeschilderd accent", fr: "Accent peint à la main" },
-    },
-    name: {
-      en: "Geometric Wall Sign",
-      nl: "Geometrisch wandschild",
-      fr: "Enseigne murale géométrique",
-    },
-    description: {
-      en: "A statement wall piece with a layered lattice pattern — perfect for a studio or shop front.",
-      nl: "Een opvallend wandstuk met een gelaagd rasterpatroon — perfect voor een studio of winkelpui.",
-      fr: "Une pièce murale marquante au motif de claire-voie superposé — parfaite pour un studio ou une devanture.",
-    },
-  },
-  {
-    id: "p8",
-    slug: "wearable-wrist-rest",
-    price: 22,
-    category: "tech",
-    image: "/images/gallery-4.png",
-    stock: 15,
-    specs: {
-      material: { en: "Nylon (PA12)", nl: "Nylon (PA12)", fr: "Nylon (PA12)" },
-      dimensions: "One size · adjustable",
-      layerHeight: "0.18 mm",
-      finishing: { en: "Sanded, oiled", nl: "Geschuurd, geöld", fr: "Poncé, huilé" },
-    },
-    name: {
-      en: "Wearable Wrist Rest",
-      nl: "Draagbare polssteun",
-      fr: "Repose-poignet portable",
-    },
-    description: {
-      en: "An ergonomic wearable that supports your wrist during long sessions. Lightweight and adjustable.",
-      nl: "Een ergonomisch draagstuk dat je pols ondersteunt tijdens lange sessies. Licht en verstelbaar.",
-      fr: "Un support ergonomique portable qui soulage le poignet lors des longues sessions. Léger et réglable.",
-    },
-  },
-];
-
-export function getProduct(id: string): Product | undefined {
-  return products.find((p) => p.id === id);
-}
 
 export function localizedPrice(price: number, locale: Locale): string {
   try {

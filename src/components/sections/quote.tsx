@@ -34,6 +34,7 @@ import {
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "@/components/motion/reveal";
 import { useToast } from "@/hooks/use-toast";
+import { ModelUploadPreview } from "@/components/three/model-upload-preview";
 
 type FormState = {
   name: string;
@@ -269,10 +270,9 @@ export function Quote({ hideHeading = false }: { hideHeading?: boolean } = {}) {
                       error={errors.fileUrl}
                       hint={q.form.fileHint}
                     >
-                      <Input
-                        value={form.fileUrl}
-                        onChange={(e) => update("fileUrl", e.target.value)}
-                        placeholder="https://"
+                      <ModelUploadPreview
+                        value={form.fileUrl || undefined}
+                        onUploaded={(url) => update("fileUrl", url ?? "")}
                       />
                     </Field>
 

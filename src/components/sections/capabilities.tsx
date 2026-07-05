@@ -22,12 +22,7 @@ export function Capabilities({ hideHeading = false }: { hideHeading?: boolean } 
         {!hideHeading ? (
           <SectionHeading
             eyebrow={c.eyebrow}
-            title={
-              <>
-                A studio built for{" "}
-                <span className="text-gradient">anything you can model.</span>
-              </>
-            }
+            title={c.title}
             subtitle={c.subtitle}
           />
         ) : null}

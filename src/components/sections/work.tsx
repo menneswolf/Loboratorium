@@ -22,15 +22,7 @@ export function Work({ hideHeading = false }: { hideHeading?: boolean } = {}) {
     <section id="work" className={hideHeading ? "relative pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative py-20 sm:py-28"}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {!hideHeading ? (
-          <SectionHeading
-            eyebrow={w.eyebrow}
-            title={
-              <>
-                A glimpse of <span className="text-gradient">what we make.</span>
-              </>
-            }
-            subtitle={w.subtitle}
-          />
+          <SectionHeading eyebrow={w.eyebrow} title={w.title} subtitle={w.subtitle} />
         ) : null}
 
         <StaggerGroup className={hideHeading ? "mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" : "mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"}>

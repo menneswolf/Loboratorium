@@ -12,7 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, CheckCircle2, Loader2, ArrowLeft, Info } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useCart } from "@/lib/cart";
-import { getProduct, localizedPrice } from "@/config/products";
+import { localizedPrice } from "@/config/products";
+import { useProducts } from "@/lib/products-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,6 +50,7 @@ export function CheckoutDialog() {
   const closeCheckout = useCart((st) => st.closeCheckout);
   const items = useCart((st) => st.items);
   const clear = useCart((st) => st.clear);
+  const products = useProducts();
 
   const [form, setForm] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
@@ -56,7 +58,7 @@ export function CheckoutDialog() {
   const [orderRef, setOrderRef] = useState<string>("");
 
   const subtotal = items.reduce((sum, i) => {
-    const p = getProduct(i.productId);
+    const p = products.find((p) => p.id === i.productId);
     return sum + (p ? p.price * i.qty : 0);
   }, 0);
   const shipping = subtotal >= 150 ? 0 : 6.5;
