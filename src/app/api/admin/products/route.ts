@@ -1,24 +1,6 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { db } from "@/lib/db";
-
-const localizedText = z.object({ en: z.string(), nl: z.string(), fr: z.string() });
-
-const productSchema = z.object({
-  slug: z.string().min(1),
-  price: z.number().min(0),
-  category: z.enum(["decor", "desk", "kitchen", "tech"]),
-  image: z.string().min(1),
-  badge: z.string().optional(),
-  stock: z.number().int().min(0),
-  modelUrl: z.string().optional(),
-  material: localizedText,
-  dimensions: z.string(),
-  layerHeight: z.string(),
-  finishing: localizedText,
-  name: localizedText,
-  description: localizedText,
-});
+import { productInputSchema, toPrismaProductData } from "@/lib/product-input";
 
 export async function GET() {
   const products = await db.product.findMany({ orderBy: { createdAt: "asc" } });
@@ -26,7 +8,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const parsed = productSchema.safeParse(await req.json().catch(() => null));
+  const parsed = productInputSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json(
       { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid product." },
@@ -35,9 +17,8 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { badge, modelUrl, ...rest } = parsed.data;
     const product = await db.product.create({
-      data: { ...rest, badge: badge || null, modelUrl: modelUrl || null },
+      data: toPrismaProductData(parsed.data),
     });
     return NextResponse.json({ ok: true, product }, { status: 201 });
   } catch (err) {

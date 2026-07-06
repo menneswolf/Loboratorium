@@ -18,6 +18,7 @@ export type Product = {
   id: string;
   slug: string;
   price: number; // EUR
+  salePrice?: number | null; // EUR, when on sale
   category: ProductCategory;
   image: string;
   badge?: ProductBadge;
@@ -31,7 +32,25 @@ export type Product = {
   };
   name: LocalizedText;
   description: LocalizedText;
+  seo?: {
+    metaTitle?: LocalizedText | null;
+    metaDescription?: LocalizedText | null;
+    imageAlt?: LocalizedText | null;
+  };
 };
+
+/** The price a customer actually pays — the sale price if one is set and lower. */
+export function effectivePrice(p: Pick<Product, "price" | "salePrice">): number {
+  if (p.salePrice != null && p.salePrice > 0 && p.salePrice < p.price) {
+    return p.salePrice;
+  }
+  return p.price;
+}
+
+/** True when the product has an active, lower sale price. */
+export function isOnSale(p: Pick<Product, "price" | "salePrice">): boolean {
+  return p.salePrice != null && p.salePrice > 0 && p.salePrice < p.price;
+}
 
 export function localizedPrice(price: number, locale: Locale): string {
   try {

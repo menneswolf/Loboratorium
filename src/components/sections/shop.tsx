@@ -15,11 +15,12 @@ import Link from "next/link";
 import { Plus, Check, ArrowRight } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import {
-  localizedPrice,
+  isOnSale,
   type Product,
   type ProductCategory,
 } from "@/config/products";
 import { useProducts } from "@/lib/products-store";
+import { PriceTag } from "@/components/brand/price-tag";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "./section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/motion/reveal";
@@ -144,6 +145,11 @@ function ProductCard({ product }: { product: Product }) {
               {s.badges[product.badge]}
             </span>
           ) : null}
+          {isOnSale(product) ? (
+            <span className="absolute right-2.5 top-2.5 rounded-full border border-white/10 bg-red-600/90 px-2.5 py-0.5 font-heading text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-sm">
+              Sale
+            </span>
+          ) : null}
         </div>
 
         <div className="relative z-[2] flex flex-1 flex-col p-3 sm:p-4">
@@ -155,9 +161,11 @@ function ProductCard({ product }: { product: Product }) {
           </p>
 
           <div className="mt-3 flex items-center justify-between gap-2 pt-1">
-            <span className="font-heading text-base font-bold tabular-nums text-foreground sm:text-lg">
-              {localizedPrice(product.price, locale)}
-            </span>
+            <PriceTag
+              product={product}
+              locale={locale}
+              className="font-heading text-base font-bold text-foreground sm:text-lg"
+            />
             <Button
               size="icon"
               onClick={handleAdd}

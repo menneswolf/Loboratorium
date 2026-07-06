@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { getAllProducts } from "@/lib/products";
+import { effectivePrice } from "@/config/products";
 import { rateLimit } from "@/lib/rate-limit";
 import { getMollie, isMollieConfigured, eur } from "@/lib/mollie";
 import { baseUrl } from "@/lib/base-url";
+import { getSettings, computeShipping } from "@/lib/settings";
+import { validateCoupon, redeemCoupon } from "@/lib/coupons";
 
 const orderSchema = z.object({
   name: z.string().min(2).max(120),
@@ -14,6 +17,7 @@ const orderSchema = z.object({
   city: z.string().min(2).max(120),
   postalCode: z.string().min(2).max(20),
   country: z.string().min(2).max(120),
+  couponCode: z.string().max(40).optional().or(z.literal("")),
   locale: z.enum(["en", "nl", "fr"]).default("en"),
   items: z
     .array(
@@ -52,11 +56,19 @@ export async function POST(req: Request) {
     );
   }
 
+  const settings = await getSettings();
+  if (!settings.checkoutEnabled) {
+    return NextResponse.json(
+      { ok: false, error: "The shop is not accepting orders right now." },
+      { status: 403 }
+    );
+  }
+
   // Resolve items against the server-side catalogue to compute the real total.
-  // (Never trust prices sent from the client.)
+  // (Never trust prices sent from the client — uses the sale price if set.)
   const products = await getAllProducts();
   const lineItems: { productId: string; name: string; price: number; qty: number }[] = [];
-  let total = 0;
+  let subtotal = 0;
   for (const item of parsed.data.items) {
     const product = products.find((p) => p.id === item.productId);
     if (!product) {
@@ -71,19 +83,31 @@ export async function POST(req: Request) {
         { status: 422 }
       );
     }
-    const lineTotal = product.price * item.qty;
-    total += lineTotal;
+    const unitPrice = effectivePrice(product);
+    subtotal += unitPrice * item.qty;
     lineItems.push({
       productId: product.id,
       name: product.name[parsed.data.locale] ?? product.name.en,
-      price: product.price,
+      price: unitPrice,
       qty: item.qty,
     });
   }
 
-  // Shipping: free over €150, else €6.50
-  const shipping = total >= 150 ? 0 : 6.5;
-  total += shipping;
+  // Coupon (validated server-side; never trust a client-computed discount)
+  let discount = 0;
+  let appliedCoupon: string | null = null;
+  const rawCode = parsed.data.couponCode?.trim();
+  if (rawCode) {
+    const result = await validateCoupon(rawCode, subtotal);
+    if (!result.ok) {
+      return NextResponse.json({ ok: false, error: result.error }, { status: 422 });
+    }
+    discount = result.discount;
+    appliedCoupon = result.code;
+  }
+
+  const shipping = computeShipping(settings, subtotal - discount, parsed.data.country);
+  const total = Math.max(0, subtotal - discount) + shipping;
 
   try {
     // Ensure unique ref
@@ -104,6 +128,10 @@ export async function POST(req: Request) {
         city: parsed.data.city,
         postalCode: parsed.data.postalCode,
         country: parsed.data.country,
+        subtotal,
+        discount,
+        couponCode: appliedCoupon,
+        shippingCost: shipping,
         total,
         // No online payment configured yet → keep the email-flow behaviour.
         status: isMollieConfigured() ? "pending_payment" : "pending",
@@ -112,6 +140,9 @@ export async function POST(req: Request) {
       },
       include: { items: true },
     });
+
+    // Count the coupon use once the order exists.
+    if (appliedCoupon) await redeemCoupon(appliedCoupon);
 
     // If Mollie is configured, create a payment and hand back its hosted
     // checkout URL. The client redirects there; the payment is confirmed by

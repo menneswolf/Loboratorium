@@ -21,6 +21,7 @@ export type ProductFormData = {
   id?: string;
   slug: string;
   price: number;
+  salePrice: number | null;
   category: string;
   image: string;
   badge: string;
@@ -32,11 +33,15 @@ export type ProductFormData = {
   finishing: LocalizedText;
   name: LocalizedText;
   description: LocalizedText;
+  metaTitle: LocalizedText;
+  metaDescription: LocalizedText;
+  imageAlt: LocalizedText;
 };
 
 const EMPTY: ProductFormData = {
   slug: "",
   price: 0,
+  salePrice: null,
   category: "decor",
   image: "",
   badge: "",
@@ -48,6 +53,9 @@ const EMPTY: ProductFormData = {
   finishing: { en: "", nl: "", fr: "" },
   name: { en: "", nl: "", fr: "" },
   description: { en: "", nl: "", fr: "" },
+  metaTitle: { en: "", nl: "", fr: "" },
+  metaDescription: { en: "", nl: "", fr: "" },
+  imageAlt: { en: "", nl: "", fr: "" },
 };
 
 export function ProductForm({ initial }: { initial?: ProductFormData }) {
@@ -63,10 +71,46 @@ export function ProductForm({ initial }: { initial?: ProductFormData }) {
     setForm((f) => ({ ...f, [key]: value }));
 
   const setLocalized = (
-    field: "material" | "finishing" | "name" | "description",
+    field:
+      | "material"
+      | "finishing"
+      | "name"
+      | "description"
+      | "metaTitle"
+      | "metaDescription"
+      | "imageAlt",
     locale: keyof LocalizedText,
     value: string
   ) => setForm((f) => ({ ...f, [field]: { ...f[field], [locale]: value } }));
+
+  const [seoDrafting, setSeoDrafting] = useState(false);
+  const generateSeo = async () => {
+    setSeoDrafting(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/generate-seo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          description: form.description,
+          category: form.category,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "SEO request failed.");
+      setForm((f) => ({
+        ...f,
+        metaTitle: data.metaTitle,
+        metaDescription: data.metaDescription,
+        imageAlt: data.imageAlt,
+      }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not generate SEO.");
+    } finally {
+      setSeoDrafting(false);
+    }
+  };
 
   const draftWithGemini = async () => {
     setDrafting(true);
@@ -156,6 +200,18 @@ export function ProductForm({ initial }: { initial?: ProductFormData }) {
             step="0.01"
             value={form.price}
             onChange={(e) => set("price", Number(e.target.value))}
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label>Sale price (EUR) — blank = not on sale</Label>
+          <Input
+            type="number"
+            step="0.01"
+            placeholder="e.g. 19.99"
+            value={form.salePrice ?? ""}
+            onChange={(e) =>
+              set("salePrice", e.target.value === "" ? null : Number(e.target.value))
+            }
           />
         </div>
         <div className="space-y-1.5">
@@ -269,6 +325,56 @@ export function ProductForm({ initial }: { initial?: ProductFormData }) {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* SEO */}
+      <div className="rounded-2xl border border-border p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <Sparkles className="size-4 text-brand-accent" />
+            SEO (search engine titles, descriptions & image alt text)
+          </div>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={seoDrafting}
+            onClick={generateSeo}
+          >
+            {seoDrafting ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
+            Generate SEO with AI
+          </Button>
+        </div>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Optional. Leave blank to fall back to the product name/description.
+        </p>
+        <div className="mt-3 space-y-3">
+          {(["en", "nl", "fr"] as const).map((locale) => (
+            <div key={locale} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <div className="space-y-1.5">
+                <Label className="uppercase">{locale} meta title</Label>
+                <Input
+                  value={form.metaTitle[locale]}
+                  onChange={(e) => setLocalized("metaTitle", locale, e.target.value)}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="uppercase">{locale} meta description</Label>
+                <Input
+                  value={form.metaDescription[locale]}
+                  onChange={(e) => setLocalized("metaDescription", locale, e.target.value)}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="uppercase">{locale} image alt</Label>
+                <Input
+                  value={form.imageAlt[locale]}
+                  onChange={(e) => setLocalized("imageAlt", locale, e.target.value)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {error ? <p className="text-sm text-destructive">{error}</p> : null}

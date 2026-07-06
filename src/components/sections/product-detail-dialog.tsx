@@ -10,7 +10,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { Minus, Plus, ShoppingBag, Check } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import { localizedPrice, type Product } from "@/config/products";
+import { type Product } from "@/config/products";
+import { PriceTag } from "@/components/brand/price-tag";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -77,9 +78,11 @@ export function ProductDetailDialog({
               </DialogHeader>
 
               <div className="mt-4 flex items-center gap-2">
-                <span className="font-heading text-2xl font-bold text-foreground">
-                  {localizedPrice(product.price, locale)}
-                </span>
+                <PriceTag
+                  product={product}
+                  locale={locale}
+                  className="font-heading text-2xl font-bold text-foreground"
+                />
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                     product.stock > 0

@@ -7,6 +7,7 @@ function toProduct(row: PrismaProduct): Product {
     id: row.id,
     slug: row.slug,
     price: row.price,
+    salePrice: row.salePrice ?? null,
     category: row.category as Product["category"],
     image: row.image,
     badge: (row.badge as Product["badge"]) ?? undefined,
@@ -20,6 +21,11 @@ function toProduct(row: PrismaProduct): Product {
     },
     name: row.name as Product["name"],
     description: row.description as Product["description"],
+    seo: {
+      metaTitle: (row.metaTitle as Product["name"] | null) ?? null,
+      metaDescription: (row.metaDescription as Product["name"] | null) ?? null,
+      imageAlt: (row.imageAlt as Product["name"] | null) ?? null,
+    },
   };
 }
 

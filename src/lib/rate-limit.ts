@@ -13,6 +13,7 @@ const MAX_REQUESTS: Record<string, number> = {
   orders: 10,
   quote: 10,
   upload: 20,
+  coupon: 20,
   "admin-generate": 20,
 };
 const DEFAULT_MAX = 30;

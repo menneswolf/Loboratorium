@@ -15,7 +15,7 @@ import { notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import { Minus, Plus, ShoppingBag, Check, ArrowRight, ArrowLeft } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import { localizedPrice } from "@/config/products";
+import { PriceTag } from "@/components/brand/price-tag";
 import { useProducts, useProductsStore } from "@/lib/products-store";
 import { PageHeader } from "@/components/sections/page-header";
 import { Button } from "@/components/ui/button";
@@ -94,9 +94,11 @@ export default function ProductPage({
                   {product.name[locale]}
                 </h1>
                 <div className="mt-3 flex items-center gap-3">
-                  <span className="font-heading text-3xl font-bold text-foreground">
-                    {localizedPrice(product.price, locale)}
-                  </span>
+                  <PriceTag
+                    product={product}
+                    locale={locale}
+                    className="font-heading text-3xl font-bold text-foreground"
+                  />
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       product.stock > 0
@@ -206,9 +208,11 @@ export default function ProductPage({
                       <h3 className="font-heading text-sm font-semibold text-foreground transition-colors group-hover:text-brand-accent">
                         {p.name[locale]}
                       </h3>
-                      <p className="mt-1 font-heading text-sm font-bold tabular-nums text-foreground">
-                        {localizedPrice(p.price, locale)}
-                      </p>
+                      <PriceTag
+                        product={p}
+                        locale={locale}
+                        className="mt-1 block font-heading text-sm font-bold text-foreground"
+                      />
                     </div>
                   </Link>
                 </StaggerItem>

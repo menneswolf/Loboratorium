@@ -34,6 +34,10 @@ model Order {
   city        String
   postalCode  String
   country     String
+  subtotal     Float?
+  discount     Float       @default(0)
+  couponCode   String?
+  shippingCost Float        @default(0)
   total       Float
   // pending_payment | paid | processing | shipped | delivered | cancelled | failed | expired
   status      String      @default("pending_payment")
@@ -69,6 +73,7 @@ model Product {
   id          String   @id @default(cuid())
   slug        String   @unique
   price       Float
+  salePrice   Float?
   category    String
   image       String
   badge       String?
@@ -79,7 +84,37 @@ model Product {
   finishing   Json
   name        Json
   description Json
+  // SEO (localized JSON: { en, nl, fr })
+  metaTitle       Json?
+  metaDescription Json?
+  imageAlt        Json?
   modelUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+/* Singleton store configuration — one row, id = "store". */
+model StoreSetting {
+  id                    String   @id @default("store")
+  storeName             String   @default("Loboratorium")
+  currency              String   @default("EUR")
+  vatRate               Float    @default(21) // percent, prices are VAT-inclusive
+  shippingFlatRate      Float    @default(6.5)
+  freeShippingThreshold Float?   @default(150)
+  shippingRates         Json? // per-country overrides, e.g. { "NL": 8.5, "FR": 9 }
+  checkoutEnabled       Boolean  @default(true)
+  updatedAt             DateTime @updatedAt
+}
+
+model Coupon {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  type      String    @default("percent") // "percent" | "fixed"
+  value     Float
+  minOrder  Float?
+  maxUses   Int?
+  usedCount Int       @default(0)
+  expiresAt DateTime?
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
 }

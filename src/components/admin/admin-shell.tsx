@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, Package, FileText, ShoppingBag, LogOut, Menu } from "lucide-react";
+import { LayoutDashboard, Package, FileText, ShoppingBag, LogOut, Menu, Ticket, Settings, Sparkles } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,9 @@ const NAV = [
   { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { href: "/admin/quotes", label: "Quote requests", icon: FileText },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/coupons", label: "Coupons", icon: Ticket },
+  { href: "/admin/insights", label: "AI insights", icon: Sparkles },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {

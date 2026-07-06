@@ -7,13 +7,14 @@
  *  the real total server-side), then shows a success screen with the order ref.
  * ========================================================================== */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, CheckCircle2, Loader2, ArrowLeft, Info } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, ArrowLeft, Info, Tag, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useCart } from "@/lib/cart";
-import { localizedPrice } from "@/config/products";
+import { localizedPrice, effectivePrice } from "@/config/products";
 import { useProducts } from "@/lib/products-store";
+import { countryCode } from "@/lib/country";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -59,12 +60,81 @@ export function CheckoutDialog() {
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
   const [orderRef, setOrderRef] = useState<string>("");
 
+  type StoreConfig = {
+    vatRate: number;
+    shippingFlatRate: number;
+    freeShippingThreshold: number | null;
+    shippingRates: Record<string, number> | null;
+  };
+  const [config, setConfig] = useState<StoreConfig>({
+    vatRate: 21,
+    shippingFlatRate: 6.5,
+    freeShippingThreshold: 150,
+    shippingRates: null,
+  });
+
+  // Coupon state
+  const [couponInput, setCouponInput] = useState("");
+  const [coupon, setCoupon] = useState<{ code: string; discount: number } | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [couponBusy, setCouponBusy] = useState(false);
+
+  useEffect(() => {
+    if (!checkoutOpen) return;
+    fetch("/api/store-config")
+      .then((r) => r.json())
+      .then((d) => d?.ok && setConfig(d.config))
+      .catch(() => {});
+  }, [checkoutOpen]);
+
   const subtotal = items.reduce((sum, i) => {
     const p = products.find((p) => p.id === i.productId);
-    return sum + (p ? p.price * i.qty : 0);
+    return sum + (p ? effectivePrice(p) * i.qty : 0);
   }, 0);
-  const shipping = subtotal >= 150 ? 0 : 6.5;
-  const total = subtotal + shipping;
+
+  const discount = coupon
+    ? Math.min(coupon.discount, subtotal)
+    : 0;
+  const discountedSubtotal = Math.max(0, subtotal - discount);
+  const shipping =
+    config.freeShippingThreshold != null &&
+    discountedSubtotal >= config.freeShippingThreshold
+      ? 0
+      : config.shippingRates?.[countryCode(form.country)] ?? config.shippingFlatRate;
+  const total = discountedSubtotal + shipping;
+  const vatIncluded = total - total / (1 + config.vatRate / 100);
+
+  const applyCoupon = async () => {
+    const code = couponInput.trim();
+    if (!code) return;
+    setCouponBusy(true);
+    setCouponError("");
+    try {
+      const res = await fetch("/api/coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, subtotal }),
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        setCoupon(null);
+        setCouponError(data.error || "Invalid coupon.");
+      } else {
+        setCoupon({ code: data.code, discount: data.discount });
+        setCouponError("");
+      }
+    } catch {
+      setCouponError("Could not check that code.");
+    } finally {
+      setCouponBusy(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setCoupon(null);
+    setCouponInput("");
+    setCouponError("");
+  };
 
   const update = (k: keyof FormState, v: string) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -92,7 +162,7 @@ export function CheckoutDialog() {
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, locale, items }),
+        body: JSON.stringify({ ...form, couponCode: coupon?.code ?? "", locale, items }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || "Order failed");
@@ -118,6 +188,9 @@ export function CheckoutDialog() {
         setForm(empty);
         setErrors({});
         setOrderRef("");
+        setCoupon(null);
+        setCouponInput("");
+        setCouponError("");
       }, 200);
     }
   };
@@ -238,6 +311,46 @@ export function CheckoutDialog() {
                 <p>{s.checkout.paymentNote}</p>
               </div>
 
+              {/* Coupon */}
+              <div className="rounded-xl border border-border bg-background/40 p-3">
+                {coupon ? (
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 text-sm text-foreground">
+                      <Tag className="size-3.5 text-brand-accent" />
+                      <span className="font-medium">{coupon.code}</span> applied
+                    </span>
+                    <button
+                      onClick={removeCoupon}
+                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="size-3" /> Remove
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                      placeholder="Coupon code"
+                      className="h-9 uppercase"
+                      onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), applyCoupon())}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={applyCoupon}
+                      disabled={couponBusy || !couponInput.trim()}
+                    >
+                      {couponBusy ? <Loader2 className="size-4 animate-spin" /> : "Apply"}
+                    </Button>
+                  </div>
+                )}
+                {couponError ? (
+                  <p className="mt-1.5 text-xs text-destructive">{couponError}</p>
+                ) : null}
+              </div>
+
               {/* Order summary */}
               <div className="rounded-xl border border-border bg-background/40 p-4">
                 <div className="flex justify-between text-sm">
@@ -246,6 +359,14 @@ export function CheckoutDialog() {
                     {localizedPrice(subtotal, locale)}
                   </span>
                 </div>
+                {discount > 0 ? (
+                  <div className="mt-1 flex justify-between text-sm">
+                    <span className="text-brand-accent">Discount ({coupon?.code})</span>
+                    <span className="font-medium text-brand-accent">
+                      −{localizedPrice(discount, locale)}
+                    </span>
+                  </div>
+                ) : null}
                 <div className="mt-1 flex justify-between text-sm">
                   <span className="text-muted-foreground">{s.cart.shipping}</span>
                   <span className="font-medium text-foreground">
@@ -256,6 +377,9 @@ export function CheckoutDialog() {
                   <span className="text-foreground">{s.cart.total}</span>
                   <span className="text-foreground">{localizedPrice(total, locale)}</span>
                 </div>
+                <p className="mt-1 text-right text-xs text-muted-foreground">
+                  incl. {config.vatRate}% VAT ({localizedPrice(vatIncluded, locale)})
+                </p>
               </div>
 
               <Button

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useCart } from "@/lib/cart";
-import { localizedPrice } from "@/config/products";
+import { localizedPrice, effectivePrice } from "@/config/products";
 import { useProducts } from "@/lib/products-store";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,7 +44,7 @@ export function CartDrawer() {
     })
     .filter((x): x is { product: (typeof products)[number]; qty: number } => x !== null);
 
-  const subtotal = lines.reduce((sum, l) => sum + l.product.price * l.qty, 0);
+  const subtotal = lines.reduce((sum, l) => sum + effectivePrice(l.product) * l.qty, 0);
   const shipping = subtotal === 0 ? 0 : subtotal >= 150 ? 0 : 6.5;
   const total = subtotal + shipping;
 
@@ -116,7 +116,7 @@ export function CartDrawer() {
                         </button>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {localizedPrice(l.product.price, locale)} {s.cart.each}
+                        {localizedPrice(effectivePrice(l.product), locale)} {s.cart.each}
                       </p>
                       <div className="mt-auto flex items-center justify-between pt-2">
                         <div className="flex items-center rounded-md border border-border">
@@ -139,7 +139,7 @@ export function CartDrawer() {
                           </button>
                         </div>
                         <span className="font-heading text-sm font-bold text-foreground">
-                          {localizedPrice(l.product.price * l.qty, locale)}
+                          {localizedPrice(effectivePrice(l.product) * l.qty, locale)}
                         </span>
                       </div>
                     </div>

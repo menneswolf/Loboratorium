@@ -11,10 +11,12 @@ export default async function EditProductPage({
   const p = await db.product.findUnique({ where: { id } });
   if (!p) notFound();
 
+  const emptyL = { en: "", nl: "", fr: "" };
   const initial: ProductFormData = {
     id: p.id,
     slug: p.slug,
     price: p.price,
+    salePrice: p.salePrice ?? null,
     category: p.category,
     image: p.image,
     badge: p.badge ?? "",
@@ -26,6 +28,9 @@ export default async function EditProductPage({
     finishing: p.finishing as ProductFormData["finishing"],
     name: p.name as ProductFormData["name"],
     description: p.description as ProductFormData["description"],
+    metaTitle: (p.metaTitle as ProductFormData["metaTitle"]) ?? emptyL,
+    metaDescription: (p.metaDescription as ProductFormData["metaDescription"]) ?? emptyL,
+    imageAlt: (p.imageAlt as ProductFormData["imageAlt"]) ?? emptyL,
   };
 
   return (
