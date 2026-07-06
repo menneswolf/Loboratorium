@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSettings } from "@/lib/settings";
+import { isGeminiConfigured } from "@/lib/gemini";
 
 /** Public, read-only store config used by the cart/checkout to show shipping,
  *  VAT and currency that match what the server charges. Exposes only safe
@@ -17,6 +18,7 @@ export async function GET() {
       freeShippingThreshold: s.freeShippingThreshold,
       shippingRates: s.shippingRates,
       checkoutEnabled: s.checkoutEnabled,
+      chatEnabled: isGeminiConfigured(),
     },
   });
 }

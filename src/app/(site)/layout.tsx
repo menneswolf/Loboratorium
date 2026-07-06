@@ -4,6 +4,7 @@ import { CartDrawer } from "@/components/sections/cart-drawer";
 import { CheckoutDialog } from "@/components/sections/checkout-dialog";
 import { ProductsHydrator } from "@/components/brand/products-hydrator";
 import { LocaleInitializer } from "@/components/brand/locale-initializer";
+import { ChatWidget } from "@/components/sections/chat-widget";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +19,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       {/* Global overlays — present on every public page */}
       <CartDrawer />
       <CheckoutDialog />
+      <ChatWidget />
     </>
   );
 }

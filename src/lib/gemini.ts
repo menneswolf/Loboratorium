@@ -145,6 +145,39 @@ Be specific and reference the actual numbers/products above. Keep it under ~250 
   return run(prompt);
 }
 
+/* ---- Support chatbot ---------------------------------------------------- */
+
+export type ChatMessage = { role: "user" | "model"; text: string };
+
+export async function chatReply(input: {
+  messages: ChatMessage[];
+  context: string;
+  locale?: string;
+}): Promise<string> {
+  const lang =
+    input.locale === "nl" ? "Dutch" : input.locale === "fr" ? "French" : "English";
+
+  const systemInstruction = `You are the friendly support assistant for Loboratorium, a custom 3D-printing studio and webshop based in Belgium.
+Answer customer questions about products, materials, shipping, custom orders and the ordering process.
+Use ONLY the context below — do not invent products, prices, materials or policies. If something isn't covered, say you're not sure and point them to the quote form (/quote) or to email.
+Keep replies short and helpful (2-4 sentences). Be warm and concrete. Reply in ${lang}.
+
+CONTEXT:
+${input.context}`;
+
+  const contents = input.messages.map((m) => ({
+    role: m.role,
+    parts: [{ text: m.text }],
+  }));
+
+  const response = await client().models.generateContent({
+    model: "gemini-2.5-flash",
+    contents,
+    config: { systemInstruction },
+  });
+  return response.text?.trim() ?? "";
+}
+
 /* ---- Quote reply -------------------------------------------------------- */
 
 export async function draftQuoteReply(input: {
