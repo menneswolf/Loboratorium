@@ -5,12 +5,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Local dev uses SQLite (matches DATABASE_URL="file:./db/custom.db").
-// For production, switch provider to "postgresql" and add
-// `directUrl = env("DATABASE_URL_UNPOOLED")` — see DEPLOYMENT.md.
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model QuoteRequest {
