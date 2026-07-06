@@ -1,4 +1,14 @@
-import { GoogleGenAI } from "@google/genai";
+import { generateText, type AiMessage } from "@/lib/ai";
+
+/* AI feature helpers. These run through the provider layer in src/lib/ai.ts
+ * (Gemini or Groq). The Gemini-named exports are kept as aliases so existing
+ * imports keep working. */
+
+export {
+  isAiConfigured as isGeminiConfigured,
+  AiNotConfiguredError as GeminiNotConfiguredError,
+} from "@/lib/ai";
+export { isAiConfigured, AiNotConfiguredError } from "@/lib/ai";
 
 export type Localized = { en: string; nl: string; fr: string };
 
@@ -13,32 +23,6 @@ export type SeoDraft = {
   imageAlt: Localized;
 };
 
-export class GeminiNotConfiguredError extends Error {
-  constructor() {
-    super("GEMINI_API_KEY is not set. Add it to .env to enable AI features.");
-    this.name = "GeminiNotConfiguredError";
-  }
-}
-
-export function isGeminiConfigured(): boolean {
-  return Boolean(process.env.GEMINI_API_KEY);
-}
-
-function client(): GoogleGenAI {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new GeminiNotConfiguredError();
-  return new GoogleGenAI({ apiKey });
-}
-
-/** Run a prompt and return raw text. */
-async function run(prompt: string): Promise<string> {
-  const response = await client().models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-  return response.text?.trim() ?? "";
-}
-
 /** Parse a JSON object out of a model response (tolerates ``` fences). */
 function parseJson<T>(text: string): T {
   const cleaned = text
@@ -48,10 +32,9 @@ function parseJson<T>(text: string): T {
   try {
     return JSON.parse(cleaned) as T;
   } catch {
-    // last resort: grab the first {...} block
     const match = cleaned.match(/\{[\s\S]*\}/);
     if (match) return JSON.parse(match[0]) as T;
-    throw new Error("Gemini returned an unexpected response. Please try again.");
+    throw new Error("The AI returned an unexpected response. Please try again.");
   }
 }
 
@@ -81,8 +64,7 @@ export async function draftProductCopy(input: {
     .join("\n");
 
   const tone = input.tone?.trim() || "warm, concrete and specific";
-  const length =
-    input.length === "medium" ? "2-3 sentences" : "1-2 sentences";
+  const length = input.length === "medium" ? "2-3 sentences" : "1-2 sentences";
 
   const prompt = `You are writing product copy for a small custom 3D-printing studio's webshop.
 Given these facts about a 3D-printed product:
@@ -94,7 +76,7 @@ Tone: ${tone}. Make the Dutch and French read naturally (not literal translation
 Respond with ONLY minified JSON in this exact shape, no markdown, no commentary:
 {"name":{"en":"...","nl":"...","fr":"..."},"description":{"en":"...","nl":"...","fr":"..."}}`;
 
-  const parsed = parseJson<ProductDraft>(await run(prompt));
+  const parsed = parseJson<ProductDraft>(await generateText({ prompt }));
   return {
     name: { en: parsed.name.en, nl: parsed.name.nl, fr: parsed.name.fr },
     description: {
@@ -125,7 +107,7 @@ Make Dutch and French natural, not literal translations.
 Respond with ONLY minified JSON, no markdown:
 {"metaTitle":{"en":"","nl":"","fr":""},"metaDescription":{"en":"","nl":"","fr":""},"imageAlt":{"en":"","nl":"","fr":""}}`;
 
-  return parseJson<SeoDraft>(await run(prompt));
+  return parseJson<SeoDraft>(await generateText({ prompt }));
 }
 
 /* ---- Admin insights ----------------------------------------------------- */
@@ -142,40 +124,7 @@ Give the owner a short, practical briefing in Markdown with these sections:
 ### Pricing & promotion ideas
 ### Follow-ups
 Be specific and reference the actual numbers/products above. Keep it under ~250 words. Do not invent data.`;
-  return run(prompt);
-}
-
-/* ---- Support chatbot ---------------------------------------------------- */
-
-export type ChatMessage = { role: "user" | "model"; text: string };
-
-export async function chatReply(input: {
-  messages: ChatMessage[];
-  context: string;
-  locale?: string;
-}): Promise<string> {
-  const lang =
-    input.locale === "nl" ? "Dutch" : input.locale === "fr" ? "French" : "English";
-
-  const systemInstruction = `You are the friendly support assistant for Loboratorium, a custom 3D-printing studio and webshop based in Belgium.
-Answer customer questions about products, materials, shipping, custom orders and the ordering process.
-Use ONLY the context below — do not invent products, prices, materials or policies. If something isn't covered, say you're not sure and point them to the quote form (/quote) or to email.
-Keep replies short and helpful (2-4 sentences). Be warm and concrete. Reply in ${lang}.
-
-CONTEXT:
-${input.context}`;
-
-  const contents = input.messages.map((m) => ({
-    role: m.role,
-    parts: [{ text: m.text }],
-  }));
-
-  const response = await client().models.generateContent({
-    model: "gemini-2.5-flash",
-    contents,
-    config: { systemInstruction },
-  });
-  return response.text?.trim() ?? "";
+  return generateText({ prompt });
 }
 
 /* ---- Quote reply -------------------------------------------------------- */
@@ -199,5 +148,28 @@ Project type: ${input.projectType}
 Quantity: ${input.quantity || "not specified"}
 Budget: ${input.budget || "not specified"}
 Message: ${input.message}`;
-  return run(prompt);
+  return generateText({ prompt });
+}
+
+/* ---- Support chatbot ---------------------------------------------------- */
+
+export type ChatMessage = AiMessage;
+
+export async function chatReply(input: {
+  messages: ChatMessage[];
+  context: string;
+  locale?: string;
+}): Promise<string> {
+  const lang =
+    input.locale === "nl" ? "Dutch" : input.locale === "fr" ? "French" : "English";
+
+  const systemInstruction = `You are the friendly support assistant for Loboratorium, a custom 3D-printing studio and webshop based in Belgium.
+Answer customer questions about products, materials, shipping, custom orders and the ordering process.
+Use ONLY the context below — do not invent products, prices, materials or policies. If something isn't covered, say you're not sure and point them to the quote form (/quote) or to email.
+Keep replies short and helpful (2-4 sentences). Be warm and concrete. Reply in ${lang}.
+
+CONTEXT:
+${input.context}`;
+
+  return generateText({ system: systemInstruction, messages: input.messages });
 }
