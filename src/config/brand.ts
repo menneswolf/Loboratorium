@@ -65,15 +65,15 @@ export const brand = {
    *  `muted`      = secondary text color
    *  ──────────────────────────────────────────────────────────────────────── */
   colors: {
-    accent: "#ff6a1a",      // molten orange — filament / heat
-    accent2: "#ffb347",     // warm amber for gradients
-    accentSoft: "#ff8c3a",
-    surface: "#0a0a0b",     // near-black background
-    surfaceAlt: "#121214",  // cards / panels
-    surfaceAlt2: "#1a1a1e", // elevated panels
-    ink: "#f5f5f4",         // primary text
-    muted: "#a1a1aa",       // secondary text
-    border: "rgba(255,255,255,0.08)",
+    accent: "#15803d",      // green — buttons, highlights
+    accent2: "#0d9488",     // teal-green for gradients & glows
+    accentSoft: "#16a34a",  // mid green
+    surface: "#f6f8f4",     // light, soft off-white background
+    surfaceAlt: "#ffffff",  // cards / panels
+    surfaceAlt2: "#e9efe6", // elevated / secondary panels
+    ink: "#15241c",         // primary text (dark green-black)
+    muted: "#54615a",       // secondary text
+    border: "rgba(21,36,28,0.12)",
   },
 
   /* ────────────────────────────────────────────────────────────────────────

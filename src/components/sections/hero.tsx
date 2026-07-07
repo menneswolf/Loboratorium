@@ -165,7 +165,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="relative mx-auto w-full max-w-md lg:max-w-none"
         >
-          <div className="relative aspect-[5/4] overflow-hidden rounded-3xl border border-border bg-card shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]">
+          <div className="relative aspect-[5/4] overflow-hidden rounded-3xl border border-border bg-card shadow-[0_30px_80px_-40px_rgba(21,36,28,0.25)]">
             <Image
               src="/images/hero-print.png"
               alt="3D printer nozzle extruding molten orange filament"

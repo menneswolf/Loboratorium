@@ -52,6 +52,9 @@ yarn-error.log*
 # original source archive
 /loboratorium-website.zip
 
+# stray local image copies
+/Copy of *.png
+
 
 # typescript
 *.tsbuildinfo

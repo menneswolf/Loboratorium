@@ -64,7 +64,7 @@ export default function ProductPage({
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Image / 3D model */}
             <Reveal>
-              <div className="group relative aspect-square overflow-hidden rounded-3xl border border-border bg-card shadow-[0_40px_100px_-40px_rgba(0,0,0,0.9)]">
+              <div className="group relative aspect-square overflow-hidden rounded-3xl border border-border bg-card shadow-[0_40px_100px_-50px_rgba(21,36,28,0.28)]">
                 {/* Ambient accent glow behind the product */}
                 <div className="accent-glow pointer-events-none absolute left-1/2 top-1/2 -z-0 h-2/3 w-2/3 -translate-x-1/2 -translate-y-1/2 opacity-30" />
                 {product.modelUrl ? (

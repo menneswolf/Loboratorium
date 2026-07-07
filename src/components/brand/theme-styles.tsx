@@ -36,7 +36,7 @@ export function ThemeStyles() {
   --popover:var(--brand-surface-alt-2);
   --popover-foreground:var(--brand-ink);
   --primary:var(--brand-accent);
-  --primary-foreground:${c.surface};
+  --primary-foreground:#ffffff;
   --secondary:var(--brand-surface-alt-2);
   --secondary-foreground:var(--brand-ink);
   --muted:var(--brand-surface-alt);
