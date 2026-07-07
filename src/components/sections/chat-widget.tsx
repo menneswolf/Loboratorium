@@ -129,7 +129,10 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="glass fixed bottom-24 right-5 z-40 flex h-[70vh] max-h-[560px] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-3xl shadow-2xl"
+            // position:fixed set inline because the .glass class forces
+            // position:relative, which would otherwise win over the `fixed` class.
+            style={{ position: "fixed" }}
+            className="glass bottom-24 right-5 z-40 flex h-[70vh] max-h-[560px] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-3xl shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-border bg-card/60 px-4 py-3">
