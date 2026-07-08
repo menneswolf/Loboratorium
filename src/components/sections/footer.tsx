@@ -97,14 +97,16 @@ export function Footer() {
                   {brand.contact.email}
                 </a>
               </li>
-              <li>
-                <a
-                  href={`tel:${brand.contact.phone.replace(/\s/g, "")}`}
-                  className="transition-colors hover:text-foreground"
-                >
-                  {brand.contact.phone}
-                </a>
-              </li>
+              {(brand.contact.phone as string) ? (
+                <li>
+                  <a
+                    href={`tel:${(brand.contact.phone as string).replace(/\s/g, "")}`}
+                    className="transition-colors hover:text-foreground"
+                  >
+                    {brand.contact.phone}
+                  </a>
+                </li>
+              ) : null}
               <li>{brand.contact.location}</li>
               <li className="text-xs text-muted-foreground/70">
                 {brand.contact.responseTime}

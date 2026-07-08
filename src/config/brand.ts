@@ -32,9 +32,9 @@ export const brand = {
    *  IDENTITY
    * ──────────────────────────────────────────────────────────────────────── */
   name: "Loboratorium",
-  tagline: "Custom 3D Printing Studio",
+  tagline: "Unique, personalised 3D-printed products",
   description:
-    "Loboratorium is a custom 3D printing studio crafting bespoke parts, prototypes and production runs for makers, brands and businesses.",
+    "Loboratorium is a Belgian 3D-printing studio in Essen making unique, personalised 3D-printed homeware and décor — vases, organizers, bowls, games and more, printed to order in a wide range of colours.",
 
   /* ────────────────────────────────────────────────────────────────────────
    *  LOGO
@@ -92,16 +92,22 @@ export const brand = {
    *  CONTACT  📫
    * ──────────────────────────────────────────────────────────────────────── */
   contact: {
-    email: "hello@loboratorium.be",
-    phone: "+32 470 00 00 00",
-    location: "Belgium · Worldwide shipping",
+    // TODO: confirm the public email + add a phone number (not published on
+    // the current site). info@ is a placeholder guess — change if it's wrong.
+    email: "info@loboratorium.be",
+    phone: "",
+    location: "Kerkstraat 45, 2910 Essen, België",
     responseTime: "We reply within 24 hours",
   },
 
+  // Business registration (BTW/KBO): BE1024233490
+  vatNumber: "BE1024233490",
+
   social: [
-    { label: "Instagram", href: "https://instagram.com/loboratorium", icon: "instagram" },
-    { label: "LinkedIn", href: "https://linkedin.com/company/loboratorium", icon: "linkedin" },
-    { label: "Email", href: "mailto:hello@loboratorium.be", icon: "mail" },
+    { label: "Instagram", href: "https://instagram.com/LoboratoriumBE", icon: "instagram" },
+    { label: "Facebook", href: "https://facebook.com/profile.php?id=61574845289371", icon: "facebook" },
+    { label: "YouTube", href: "https://youtube.com/@LoboratoriumBE", icon: "youtube" },
+    { label: "TikTok", href: "https://tiktok.com/@LoboratoriumBE", icon: "tiktok" },
   ],
 
   /* ────────────────────────────────────────────────────────────────────────
