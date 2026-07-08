@@ -303,9 +303,11 @@ const en: Content = {
     categories: {
       all: "All",
       decor: "Decor",
-      desk: "Desk",
+      plants: "Plants",
       kitchen: "Kitchen",
-      tech: "Tech",
+      storage: "Storage",
+      games: "Games",
+      keychains: "Keychains",
     },
     badges: { new: "New", popular: "Popular", limited: "Limited" },
     specs: {
@@ -630,7 +632,7 @@ const nl: Content = {
     from: "Vanaf",
     outOfStock: "Uitverkocht",
     inStock: "Op voorraad",
-    categories: { all: "Alles", decor: "Decoratie", desk: "Bureau", kitchen: "Keuken", tech: "Tech" },
+    categories: { all: "Alles", decor: "Decoratie", plants: "Planten", kitchen: "Keuken", storage: "Opbergen", games: "Spellen", keychains: "Sleutelhangers" },
     badges: { new: "Nieuw", popular: "Populair", limited: "Beperkt" },
     specs: { material: "Materiaal", dimensions: "Afmetingen", layerHeight: "Laaghoogte", finishing: "Afwerking" },
     cart: {
@@ -940,7 +942,7 @@ const fr: Content = {
     from: "À partir de",
     outOfStock: "Épuisé",
     inStock: "En stock",
-    categories: { all: "Tout", decor: "Déco", desk: "Bureau", kitchen: "Cuisine", tech: "Tech" },
+    categories: { all: "Tout", decor: "Déco", plants: "Plantes", kitchen: "Cuisine", storage: "Rangement", games: "Jeux", keychains: "Porte-clés" },
     badges: { new: "Nouveau", popular: "Populaire", limited: "Édition limitée" },
     specs: { material: "Matériau", dimensions: "Dimensions", layerHeight: "Hauteur de couche", finishing: "Finition" },
     cart: {

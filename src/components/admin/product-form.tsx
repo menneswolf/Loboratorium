@@ -187,7 +187,7 @@ export function ProductForm({ initial }: { initial?: ProductFormData }) {
           <Select value={form.category} onValueChange={(v) => set("category", v)}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
-              {["decor", "desk", "kitchen", "tech"].map((c) => (
+              {["decor", "plants", "kitchen", "storage", "games", "keychains"].map((c) => (
                 <SelectItem key={c} value={c}>{c}</SelectItem>
               ))}
             </SelectContent>

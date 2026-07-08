@@ -8,7 +8,7 @@ export const productInputSchema = z.object({
   slug: z.string().min(1),
   price: z.number().min(0),
   salePrice: z.number().min(0).nullable().optional(),
-  category: z.enum(["decor", "desk", "kitchen", "tech"]),
+  category: z.enum(["decor", "plants", "kitchen", "storage", "games", "keychains"]),
   image: z.string().min(1),
   badge: z.string().optional(),
   stock: z.number().int().min(0),

@@ -55,7 +55,15 @@ export function Shop({
     [filter, allProducts]
   );
 
-  const categories: Filter[] = ["all", "decor", "desk", "kitchen", "tech"];
+  const categories: Filter[] = [
+    "all",
+    "decor",
+    "plants",
+    "kitchen",
+    "storage",
+    "games",
+    "keychains",
+  ];
 
   return (
     <section id="shop" className={hideHeading ? "relative overflow-hidden pb-20 pt-4 sm:pb-28 sm:pt-8" : "relative overflow-hidden py-20 sm:py-28"}>

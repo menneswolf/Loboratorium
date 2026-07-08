@@ -11,7 +11,13 @@
 import type { Locale } from "@/config/translations";
 
 export type LocalizedText = Record<Locale, string>;
-export type ProductCategory = "decor" | "desk" | "kitchen" | "tech";
+export type ProductCategory =
+  | "decor"
+  | "plants"
+  | "kitchen"
+  | "storage"
+  | "games"
+  | "keychains";
 export type ProductBadge = "new" | "popular" | "limited";
 
 export type Product = {
